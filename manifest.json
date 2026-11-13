@@ -1,0 +1,18 @@
+{
+  "id": "./",
+  "name": "Veterinaria Patitas",
+  "short_name": "Patitas",
+  "description": "Gestión de dueños, mascotas, turnos y consultas veterinarias.",
+  "lang": "es-AR",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFF8EE",
+  "theme_color": "#14A3A3",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
