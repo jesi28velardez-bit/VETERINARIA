@@ -1,0 +1,2627 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Veterinaria Patitas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap">
+  <style>
+/* ==========================================================================
+   1. VARIABLES (paleta, tipografía, medidas)
+   ========================================================================== */
+:root {
+  /* Verde agua: color principal */
+  --color-principal: #14A3A3;
+  --color-principal-oscuro: #0E7F7F;
+  --color-principal-suave: #E1F5F5;
+
+  /* Coral suave: avisos, acciones delicadas y cancelaciones */
+  --color-coral: #FF8F7E;
+  --color-coral-oscuro: #C9422F;
+  --color-coral-suave: #FFE8E3;
+
+  /* Fondos y superficies */
+  --color-crema: #FFF8EE;
+  --color-superficie: #FFFFFF;
+  --color-borde: #EADFCB;
+
+  /* Texto */
+  --color-texto: #1F3333;
+  --color-texto-suave: #5F7373;
+
+  /* Estados de turno que no son ni principal ni coral */
+  --color-ambar: #8A5A00;
+  --color-ambar-suave: #FFF0CF;
+  --color-atendido: #3F6B5A;
+  --color-atendido-suave: #E4F0EA;
+
+  /* Tipografía */
+  --fuente-titulos: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fuente-texto: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Formas y sombras */
+  --radio: 18px;
+  --radio-chico: 12px;
+  --sombra: 0 4px 14px rgba(20, 60, 60, 0.08);
+  --sombra-hover: 0 8px 22px rgba(20, 60, 60, 0.16);
+
+  /* Ancho máximo del contenido */
+  --ancho-max: 1100px;
+}
+
+/* ==========================================================================
+   2. BASE (reset suave y estilos globales)
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-crema);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  line-height: 1.2;
+}
+
+h2 { font-size: 1.5rem; color: var(--color-principal-oscuro); }
+h3 { font-size: 1.1rem; }
+
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 3px solid var(--color-coral);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   3. ENCABEZADO: título, buscador, exportar/importar y menú
+   ========================================================================== */
+#encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem max(1rem, calc((100% - var(--ancho-max)) / 2)) 1rem;
+  background: var(--color-principal);
+  color: #fff;
+  box-shadow: var(--sombra);
+}
+
+#encabezado h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+#encabezado h1::before {
+  content: "🐾 ";
+}
+
+/* Buscador general */
+#form-buscador {
+  position: relative;
+}
+
+#form-buscador label {
+  /* Oculta la etiqueta a la vista pero la deja para lectores de pantalla */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#form-buscador::before {
+  content: "🔍";
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#buscador {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-texto);
+  font: inherit;
+}
+
+#buscador:focus {
+  outline: none;
+  border-color: var(--color-coral);
+}
+
+/* Exportar / Importar */
+#datos {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#btn-exportar,
+#btn-importar {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  box-shadow: none;
+}
+
+#btn-exportar::before { content: "📤 "; }
+#btn-importar::before { content: "📥 "; }
+
+#btn-exportar:hover,
+#btn-importar:hover {
+  background: #fff;
+  color: var(--color-principal-oscuro);
+}
+
+/* Menú de secciones */
+#menu ul {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0 0 0.25rem;
+  list-style: none;
+  overflow-x: auto;
+}
+
+#menu a {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-family: var(--fuente-titulos);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+#menu a:hover {
+  background: #fff;
+  color: var(--color-principal-oscuro);
+  transform: translateY(-2px);
+}
+
+#menu a.activo,
+#menu a[aria-current="page"] {
+  background: #fff;
+  color: var(--color-principal-oscuro);
+}
+
+#menu a[data-seccion="duenos"]::before    { content: "👤 "; }
+#menu a[data-seccion="mascotas"]::before  { content: "🐾 "; }
+#menu a[data-seccion="turnos"]::before    { content: "📅 "; }
+#menu a[data-seccion="historias"]::before { content: "📋 "; }
+
+/* ==========================================================================
+   4. CONTENIDO PRINCIPAL Y SECCIONES (una columna en el celular)
+   ========================================================================== */
+main {
+  flex: 1;
+  display: grid;
+  gap: 2.5rem;
+  padding: 1.5rem max(1rem, calc((100% - var(--ancho-max)) / 2)) 3rem;
+}
+
+main > section {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  scroll-margin-top: 1rem;
+}
+
+#duenos > h2::before    { content: "👤 "; }
+#mascotas > h2::before  { content: "🐾 "; }
+#turnos > h2::before    { content: "📅 "; }
+#historias > h2::before { content: "📋 "; }
+
+#resultados-busqueda > h2::before { content: "🔍 "; }
+
+/* Los resultados solo se muestran cuando hay algo para mostrar */
+#resultados-busqueda:has(#lista-resultados:empty) {
+  display: none;
+}
+
+#lista-resultados {
+  display: grid;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   5. TARJETAS: formularios, selector de historias y elementos de lista
+   ========================================================================== */
+form:not(#form-buscador),
+#historias > div,
+main li,
+#lista-resultados > * {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+form:not(#form-buscador),
+#historias > div {
+  padding: 1.25rem;
+}
+
+main li,
+#lista-resultados > * {
+  padding: 1rem 1.1rem;
+}
+
+/* Listas sin viñetas y con separación entre tarjetas */
+main ul,
+main ol {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Contenido típico de una tarjeta */
+.tarjeta__titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.tarjeta__meta {
+  margin: 0.15rem 0 0;
+  color: var(--color-texto-suave);
+  font-size: 0.92rem;
+}
+
+.tarjeta__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+/* Mensajes cuando una lista está vacía (desaparecen solos al agregar datos) */
+#lista-duenos:empty::before,
+#lista-mascotas:empty::before,
+#agenda-turnos:empty::before,
+#linea-tiempo:empty::before {
+  display: block;
+  padding: 1.5rem 1rem;
+  border: 2px dashed var(--color-borde);
+  border-radius: var(--radio);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-texto-suave);
+  text-align: center;
+}
+
+#lista-duenos:empty::before   { content: "👤 Todavía no cargaste dueños."; }
+#lista-mascotas:empty::before { content: "🐾 Todavía no cargaste mascotas."; }
+#agenda-turnos:empty::before  { content: "📅 No hay turnos para este día."; }
+#linea-tiempo:empty::before   { content: "📋 Esta mascota todavía no tiene consultas."; }
+
+/* ==========================================================================
+   6. FORMULARIOS: campos y etiquetas
+   ========================================================================== */
+form:not(#form-buscador) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-content: start;
+}
+
+form:not(#form-buscador) > div {
+  flex: 1 1 100%;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+input:not([type="hidden"]):not([type="file"]):not(#buscador),
+select,
+textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+  background: #fff;
+  color: var(--color-texto);
+  font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:not(#buscador):focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-principal);
+  box-shadow: 0 0 0 4px var(--color-principal-suave);
+}
+
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+  border-color: var(--color-coral);
+  background: var(--color-coral-suave);
+}
+
+/* ==========================================================================
+   7. BOTONES (hover con cambio de color y elevación)
+   ========================================================================== */
+button {
+  padding: 0.7rem 1.2rem;
+  border: 0;
+  border-radius: var(--radio-chico);
+  background: var(--color-principal);
+  color: #fff;
+  font-family: var(--fuente-titulos);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  background: var(--color-principal-oscuro);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-hover);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: var(--sombra);
+}
+
+button[type="submit"]::before { content: "💾 "; }
+
+/* Cancelar: botón secundario */
+button[type="reset"] {
+  background: var(--color-principal-suave);
+  color: var(--color-principal-oscuro);
+  box-shadow: none;
+}
+
+button[type="reset"]:hover {
+  background: var(--color-principal);
+  color: #fff;
+}
+
+/* Botones dentro de las tarjetas */
+.btn-chico {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-peligro {
+  background: var(--color-coral-suave);
+  color: var(--color-coral-oscuro);
+  box-shadow: none;
+}
+
+.btn-peligro:hover {
+  background: var(--color-coral);
+  color: #fff;
+}
+
+/* ==========================================================================
+   8. MASCOTAS: tarjeta con emoji según la especie
+   Estructura esperada: <li class="mascota" data-especie="Perro">
+                          <div class="mascota__info"> ... </div>
+                        </li>
+   ========================================================================== */
+.mascota {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mascota::before {
+  content: "🐾";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--color-principal-suave);
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.mascota[data-especie="Perro"]::before   { content: "🐶"; }
+.mascota[data-especie="Gato"]::before    { content: "🐱"; }
+.mascota[data-especie="Ave"]::before     { content: "🐦"; }
+.mascota[data-especie="Roedor"]::before  { content: "🐹"; }
+.mascota[data-especie="Reptil"]::before  { content: "🦎"; }
+
+.mascota__info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ==========================================================================
+   9. TURNOS: agenda con etiqueta de estado
+   Estructura esperada: <li class="turno">
+                          <div class="turno__cuando">12/11 · 10:30</div>
+                          <div class="turno__info"> ... <span class="estado estado--pendiente">Pendiente</span></div>
+                        </li>
+   ========================================================================== */
+.turno {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.turno__cuando {
+  align-self: flex-start;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radio-chico);
+  background: var(--color-principal-suave);
+  color: var(--color-principal-oscuro);
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+}
+
+.turno__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.estado {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado--pendiente  { background: var(--color-ambar-suave);     color: var(--color-ambar); }
+.estado--confirmado { background: var(--color-principal-suave); color: var(--color-principal-oscuro); }
+.estado--atendido   { background: var(--color-atendido-suave);  color: var(--color-atendido); }
+.estado--cancelado  { background: var(--color-coral-suave);     color: var(--color-coral-oscuro); }
+
+/* ==========================================================================
+   10. HISTORIAS: línea de tiempo vertical
+   Estructura esperada: <li class="consulta">
+                          <time class="consulta__fecha">12/11/2026</time>
+                          <h4 class="tarjeta__titulo">Motivo</h4> ... </li>
+   ========================================================================== */
+#linea-tiempo {
+  position: relative;
+  padding-left: 2rem;
+}
+
+#linea-tiempo:not(:empty)::after {
+  content: "";
+  position: absolute;
+  left: 0.65rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(var(--color-principal), var(--color-principal-suave));
+}
+
+#linea-tiempo > li {
+  position: relative;
+}
+
+/* Punto de cada consulta sobre la línea */
+#linea-tiempo > li::before {
+  content: "";
+  position: absolute;
+  left: -1.75rem;
+  top: 1.2rem;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid var(--color-principal);
+  border-radius: 50%;
+  background: var(--color-crema);
+}
+
+.consulta__fecha {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--color-principal-oscuro);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.consulta p {
+  margin: 0.4rem 0 0;
+}
+
+
+.aviso-control-vencido {
+  margin-top: 0.65rem !important;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radio-chico);
+  background: var(--color-coral-suave);
+  color: var(--color-coral-oscuro);
+  font-weight: 600;
+}
+.consulta__detalle { margin-top: 0.45rem; }
+.consulta__detalle strong { color: var(--color-texto); }
+#form-consulta small { color: var(--color-texto-suave); }
+
+/* ==========================================================================
+   11. PIE DE PÁGINA
+   ========================================================================== */
+footer {
+  padding: 1.25rem 1rem;
+  background: var(--color-principal-suave);
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* ==========================================================================
+   DUEÑOS: errores de validación, avisos, edición y chips de mascotas
+   ========================================================================== */
+.mensaje-error {
+  margin: 0.35rem 0 0;
+  color: var(--color-coral-oscuro);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.mensaje-error::before { content: "⚠️ "; }
+
+/* !important porque el estilo base de los campos usa un selector muy específico */
+.campo-invalido {
+  border-color: var(--color-coral) !important;
+  background: var(--color-coral-suave) !important;
+}
+
+.aviso {
+  margin: 0.75rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--color-coral);
+  border-radius: var(--radio-chico);
+  background: var(--color-coral-suave);
+  color: var(--color-coral-oscuro);
+  font-size: 0.9rem;
+}
+
+.aviso::before { content: "⚠️ "; }
+
+/* Tarjeta que se está editando */
+.editando {
+  border-color: var(--color-principal);
+  box-shadow: 0 0 0 3px var(--color-principal-suave);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.chip {
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--color-principal-suave);
+  color: var(--color-principal-oscuro);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   TURNOS: barra para cambiar de día en la agenda
+   ========================================================================== */
+#agenda-barra {
+  display: grid;
+  gap: 0.6rem;
+}
+
+#agenda-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#agenda-nav button {
+  padding: 0.5rem 0.9rem;
+  background: var(--color-principal-suave);
+  color: var(--color-principal-oscuro);
+  box-shadow: none;
+}
+
+#agenda-nav button:hover {
+  background: var(--color-principal);
+  color: #fff;
+  box-shadow: var(--sombra-hover);
+}
+
+#agenda-hoy::before { content: "📅 "; }
+
+/* Dos IDs para ganarle al estilo base de los campos, que usa un selector muy específico */
+#agenda-nav #agenda-fecha {
+  width: auto;
+  flex: 1 1 9rem;
+}
+
+#agenda-titulo {
+  margin: 0;
+  color: var(--color-principal-oscuro);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   12. TABLET Y ESCRITORIO (desde 768 px: dos columnas)
+   Formulario a la izquierda, lista a la derecha.
+   ========================================================================== */
+@media (min-width: 768px) {
+  /* Encabezado en grilla: título | exportar/importar, buscador, menú */
+  #encabezado {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "titulo datos"
+      "buscador buscador"
+      "menu menu";
+    align-items: center;
+    column-gap: 1.5rem;
+  }
+
+  #encabezado h1    { grid-area: titulo; font-size: 1.9rem; }
+  #datos            { grid-area: datos; }
+  #form-buscador    { grid-area: buscador; }
+  #menu             { grid-area: menu; }
+
+  #btn-exportar,
+  #btn-importar {
+    flex: none;
+  }
+
+  /* Dueños, Mascotas y Turnos: h2 arriba, formulario | h3 + lista */
+  :is(#duenos, #mascotas, #turnos) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto 1fr;
+    column-gap: 1.5rem;
+  }
+
+  :is(#duenos, #mascotas, #turnos) > h2 { grid-column: 1 / -1; grid-row: 1; }
+  :is(#duenos, #mascotas, #turnos) > form { grid-column: 1; grid-row: 2 / span 2; }
+  :is(#duenos, #mascotas, #turnos) > h3 { grid-column: 2; grid-row: 2; }
+  #turnos > #agenda-barra { grid-column: 2; grid-row: 2; }
+  :is(#duenos, #mascotas, #turnos) > :is(ul, ol) { grid-column: 2; grid-row: 3; }
+
+  /* Historias: h2, selector de mascota (ancho completo), formulario | línea de tiempo */
+  #historias {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: 1.5rem;
+  }
+
+  #historias > h2   { grid-column: 1 / -1; grid-row: 1; }
+  #historias > div  { grid-column: 1 / -1; grid-row: 2; }
+  #historias > form { grid-column: 1; grid-row: 3 / span 2; }
+  #historias > h3   { grid-column: 2; grid-row: 3; }
+  #historias > ol   { grid-column: 2; grid-row: 4; }
+
+  /* Turno: fecha y hora al costado */
+  .turno {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  /* Resultados de búsqueda en dos columnas */
+  #lista-resultados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   13. ACCESIBILIDAD: respeta a quienes reducen las animaciones
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+
+  button:hover,
+  #menu a:hover {
+    transform: none;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <header id="encabezado">
+    <h1>Veterinaria Patitas</h1>
+
+    <form id="form-buscador" role="search">
+      <label for="buscador">Buscar</label>
+      <input type="search" id="buscador" name="buscador" placeholder="Dueño, mascota, teléfono, motivo…" autocomplete="off">
+    </form>
+
+    <div id="datos">
+      <button type="button" id="btn-exportar">Exportar</button>
+      <button type="button" id="btn-importar">Importar</button>
+      <input type="file" id="archivo-importar" accept="application/json,.json" hidden>
+    </div>
+
+    <nav id="menu" aria-label="Secciones">
+      <ul>
+        <li><a href="#duenos" data-seccion="duenos">Dueños</a></li>
+        <li><a href="#mascotas" data-seccion="mascotas">Mascotas</a></li>
+        <li><a href="#turnos" data-seccion="turnos">Turnos</a></li>
+        <li><a href="#historias" data-seccion="historias">Historias</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Resultados del buscador general -->
+    <section id="resultados-busqueda" aria-live="polite">
+      <h2>Resultados de la búsqueda</h2>
+      <div id="lista-resultados"></div>
+    </section>
+
+    <!-- DUEÑOS -->
+    <section id="duenos">
+      <h2>Dueños</h2>
+
+      <form id="form-dueno">
+        <input type="hidden" id="dueno-id" name="id">
+
+        <div>
+          <label for="dueno-nombre">Nombre</label>
+          <input type="text" id="dueno-nombre" name="nombre" required>
+        </div>
+
+        <div>
+          <label for="dueno-telefono">Teléfono</label>
+          <input type="tel" id="dueno-telefono" name="telefono" required>
+        </div>
+
+        <div>
+          <label for="dueno-email">Email</label>
+          <input type="email" id="dueno-email" name="email">
+        </div>
+
+        <div>
+          <label for="dueno-direccion">Dirección</label>
+          <input type="text" id="dueno-direccion" name="direccion">
+        </div>
+
+        <button type="submit">Guardar dueño</button>
+        <button type="reset">Cancelar</button>
+      </form>
+
+      <h3>Lista de dueños</h3>
+      <ul id="lista-duenos"></ul>
+    </section>
+
+    <!-- MASCOTAS -->
+    <section id="mascotas">
+      <h2>Mascotas</h2>
+
+      <form id="form-mascota">
+        <input type="hidden" id="mascota-id" name="id">
+
+        <div>
+          <label for="mascota-dueno">Dueño</label>
+          <select id="mascota-dueno" name="duenoId" required>
+            <option value="">Elegí un dueño</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="mascota-nombre">Nombre</label>
+          <input type="text" id="mascota-nombre" name="nombre" required>
+        </div>
+
+        <div>
+          <label for="mascota-especie">Especie</label>
+          <select id="mascota-especie" name="especie" required>
+            <option value="">Elegí una especie</option>
+            <option value="Perro">Perro</option>
+            <option value="Gato">Gato</option>
+            <option value="Ave">Ave</option>
+            <option value="Roedor">Roedor</option>
+            <option value="Reptil">Reptil</option>
+            <option value="Otra">Otra</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="mascota-raza">Raza</label>
+          <input type="text" id="mascota-raza" name="raza">
+        </div>
+
+        <div>
+          <label for="mascota-sexo">Sexo</label>
+          <select id="mascota-sexo" name="sexo" required>
+            <option value="">Elegí el sexo</option>
+            <option value="Macho">Macho</option>
+            <option value="Hembra">Hembra</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="mascota-nacimiento">Fecha de nacimiento</label>
+          <input type="date" id="mascota-nacimiento" name="nacimiento">
+        </div>
+
+        <div>
+          <label for="mascota-peso">Peso (kg)</label>
+          <input type="number" id="mascota-peso" name="peso" min="0" step="0.01" inputmode="decimal">
+        </div>
+
+        <button type="submit">Guardar mascota</button>
+        <button type="reset">Cancelar</button>
+      </form>
+
+      <h3>Lista de mascotas</h3>
+      <ul id="lista-mascotas"></ul>
+    </section>
+
+    <!-- TURNOS -->
+    <section id="turnos">
+      <h2>Turnos</h2>
+
+      <form id="form-turno">
+        <input type="hidden" id="turno-id" name="id">
+
+        <div>
+          <label for="turno-mascota">Mascota</label>
+          <select id="turno-mascota" name="mascotaId" required>
+            <option value="">Elegí una mascota</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="turno-fecha">Fecha</label>
+          <input type="date" id="turno-fecha" name="fecha" required>
+        </div>
+
+        <div>
+          <label for="turno-hora">Hora (de 9:00 a 20:00)</label>
+          <input type="time" id="turno-hora" name="hora" required>
+        </div>
+
+        <div>
+          <label for="turno-motivo">Motivo</label>
+          <input type="text" id="turno-motivo" name="motivo" required>
+        </div>
+
+        <div>
+          <label for="turno-veterinario">Veterinario</label>
+          <input type="text" id="turno-veterinario" name="veterinario" required>
+        </div>
+
+        <button type="submit">Agendar turno</button>
+        <button type="reset">Cancelar</button>
+      </form>
+
+      <div id="agenda-barra">
+        <h3>Agenda</h3>
+        <div id="agenda-nav" role="group" aria-label="Cambiar de día">
+          <button type="button" id="agenda-anterior" aria-label="Día anterior">◀</button>
+          <button type="button" id="agenda-hoy">Hoy</button>
+          <button type="button" id="agenda-siguiente" aria-label="Día siguiente">▶</button>
+          <input type="date" id="agenda-fecha" aria-label="Elegir el día de la agenda">
+        </div>
+        <p id="agenda-titulo" aria-live="polite"></p>
+      </div>
+      <ol id="agenda-turnos"></ol>
+    </section>
+
+    <!-- HISTORIAS -->
+    <section id="historias">
+      <h2>Historias clínicas</h2>
+
+      <div>
+        <label for="historia-mascota">Mascota</label>
+        <select id="historia-mascota" name="mascotaId">
+          <option value="">Elegí una mascota</option>
+        </select>
+      </div>
+
+      <form id="form-consulta">
+        <input type="hidden" id="consulta-id" name="id">
+        <input type="hidden" id="consulta-turno-id" name="turnoId">
+
+        <div>
+          <label for="consulta-fecha">Fecha de consulta</label>
+          <input type="date" id="consulta-fecha" name="fecha" required>
+        </div>
+
+        <div>
+          <label for="consulta-motivo">Motivo de consulta</label>
+          <input type="text" id="consulta-motivo" name="motivo" required>
+        </div>
+
+        <div>
+          <label for="consulta-peso">Peso (kg) *</label>
+          <input type="number" id="consulta-peso" name="peso" min="0.1" max="120" step="0.01" inputmode="decimal" required>
+        </div>
+
+        <div>
+          <label for="consulta-diagnostico">Diagnóstico *</label>
+          <textarea id="consulta-diagnostico" name="diagnostico" rows="3" required></textarea>
+        </div>
+
+        <div>
+          <label for="consulta-tratamiento">Tratamiento *</label>
+          <textarea id="consulta-tratamiento" name="tratamiento" rows="3" required></textarea>
+        </div>
+
+        <div>
+          <label for="consulta-vacunas">Vacunas</label>
+          <textarea id="consulta-vacunas" name="vacunas" rows="2" placeholder="Vacunas aplicadas, pendientes o próximas dosis"></textarea>
+        </div>
+
+        <div>
+          <label for="consulta-proximo-control">Fecha de próximo control</label>
+          <input type="date" id="consulta-proximo-control" name="proximoControl">
+          <small>Si indicás una fecha, debe ser igual o posterior a la consulta.</small>
+        </div>
+
+        <div>
+          <label for="consulta-observaciones">Observaciones</label>
+          <textarea id="consulta-observaciones" name="observaciones" rows="3"></textarea>
+        </div>
+
+        <button type="submit">Guardar consulta</button>
+        <button type="reset">Cancelar</button>
+      </form>
+
+      <h3>Línea de tiempo</h3>
+      <ol id="linea-tiempo"></ol>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Veterinaria Patitas · Sistema de gestión (ficticio)</p>
+  </footer>
+
+  <script>
+/* ==========================================================================
+   Veterinaria Patitas
+   REGISTRO DE IA: (pegá acá tu comentario de registro de IA)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. DATOS
+   Campos tomados de los formularios del index.html.
+   Cada registro tiene un "id" propio; las relaciones se hacen con ese id:
+   mascotas.duenoId -> duenos.id
+   turnos.mascotaId y consultas.mascotaId -> mascotas.id
+   ========================================================================== */
+
+const CLAVE_STORAGE = "veterinaria-datos";
+
+// duenos:    { id, nombre, telefono, email, direccion }
+const duenos = [];
+
+// mascotas:  { id, duenoId, nombre, especie, raza, sexo, nacimiento, peso }
+const mascotas = [];
+
+// turnos:    { id, mascotaId, fecha, hora, motivo, veterinario, estado }
+const turnos = [];
+
+// consultas: { id, mascotaId, fecha, motivo, peso, diagnostico, tratamiento, observaciones }
+const consultas = [];
+
+/** Genera un id único para un registro nuevo. */
+function nuevoId() {
+  if (window.crypto && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+
+/* ==========================================================================
+   2. PERSISTENCIA (localStorage, clave "veterinaria-datos")
+   Se guarda un solo objeto con los cuatro arrays.
+   Llamá a guardarDatos() después de agregar, editar o borrar algo.
+   ========================================================================== */
+
+function guardarDatos() {
+  try {
+    localStorage.setItem(
+      CLAVE_STORAGE,
+      JSON.stringify({ duenos, mascotas, turnos, consultas })
+    );
+    return true;
+  } catch (error) {
+    console.error("No se pudieron guardar los datos:", error);
+    return false;
+  }
+}
+
+function cargarDatos() {
+  try {
+    const crudo = localStorage.getItem(CLAVE_STORAGE);
+    if (!crudo) return;
+
+    const datos = JSON.parse(crudo);
+    // Se rellenan los arrays existentes para no perder las referencias
+    duenos.splice(0, duenos.length, ...(datos.duenos || []));
+    mascotas.splice(0, mascotas.length, ...(datos.mascotas || []));
+    turnos.splice(0, turnos.length, ...(datos.turnos || []));
+    consultas.splice(0, consultas.length, ...(datos.consultas || []));
+  } catch (error) {
+    console.error("No se pudieron leer los datos guardados:", error);
+  }
+}
+
+cargarDatos();
+
+
+/* ==========================================================================
+   3. MENÚ: una sola sección visible por vez
+   ========================================================================== */
+
+const SECCIONES = ["duenos", "mascotas", "turnos", "historias"];
+const SECCION_INICIAL = "duenos";
+
+function mostrarSeccion(id) {
+  if (!SECCIONES.includes(id)) id = SECCION_INICIAL;
+
+  SECCIONES.forEach((seccion) => {
+    const elemento = document.getElementById(seccion);
+    if (elemento) elemento.hidden = seccion !== id;
+  });
+
+  document.querySelectorAll("#menu a[data-seccion]").forEach((enlace) => {
+    const activo = enlace.dataset.seccion === id;
+    enlace.classList.toggle("activo", activo);
+    if (activo) {
+      enlace.setAttribute("aria-current", "page");
+    } else {
+      enlace.removeAttribute("aria-current");
+    }
+  });
+}
+
+function seccionDesdeHash() {
+  return location.hash.replace("#", "");
+}
+
+// Al hacer clic en el menú cambia el hash, y de ahí se muestra la sección
+window.addEventListener("hashchange", () => mostrarSeccion(seccionDesdeHash()));
+
+// Primera carga: respeta el hash de la URL o arranca en Dueños
+mostrarSeccion(seccionDesdeHash());
+
+
+/* ==========================================================================
+   4. EDAD
+   edad("2024-08-15") -> "2 años y 3 meses", "1 año", "5 meses", etc.
+   Recibe la fecha como la devuelve <input type="date"> (AAAA-MM-DD).
+   Devuelve "" si la fecha está vacía, es inválida o es futura.
+   ========================================================================== */
+
+function edad(fechaNacimiento) {
+  if (!fechaNacimiento) return "";
+
+  // Se arma con partes numéricas para evitar problemas de zona horaria
+  const partes = String(fechaNacimiento).split("-").map(Number);
+  const [anio, mes, dia] = partes;
+  if (partes.length !== 3 || partes.some(Number.isNaN)) return "";
+
+  const hoy = new Date();
+  let totalMeses =
+    (hoy.getFullYear() - anio) * 12 + (hoy.getMonth() + 1 - mes);
+
+  // Si todavía no llegó el día del mes del cumpleaños/mesversario, falta un mes
+  if (hoy.getDate() < dia) totalMeses--;
+
+  if (totalMeses < 0) return "";
+  if (totalMeses === 0) return "menos de 1 mes";
+
+  const anios = Math.floor(totalMeses / 12);
+  const meses = totalMeses % 12;
+
+  const textoAnios = anios === 1 ? "1 año" : `${anios} años`;
+  const textoMeses = meses === 1 ? "1 mes" : `${meses} meses`;
+
+  if (anios === 0) return textoMeses;
+  if (meses === 0) return textoAnios;
+  return `${textoAnios} y ${textoMeses}`;
+}
+
+
+/* ==========================================================================
+   5. DUEÑOS: alta, listado, edición y baja
+   ========================================================================== */
+
+const formDueno = document.getElementById("form-dueno");
+const listaDuenos = document.getElementById("lista-duenos");
+const campoDueno = {
+  id: document.getElementById("dueno-id"),
+  nombre: document.getElementById("dueno-nombre"),
+  telefono: document.getElementById("dueno-telefono"),
+  email: document.getElementById("dueno-email"),
+  direccion: document.getElementById("dueno-direccion"),
+};
+
+// La validación la hace este código (con mensajes propios), no el navegador
+formDueno.noValidate = true;
+
+const REGEX_TELEFONO = /^[0-9 -]+$/;
+const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+let idDuenoEnEdicion = null; // id del dueño que se está editando (null = alta)
+let avisoDueno = null; // { id, texto }: aviso que se muestra dentro de una tarjeta
+
+/** Crea un elemento con clase y texto (el texto va como texto, nunca como HTML). */
+function crearElemento(etiqueta, clase, texto) {
+  const nodo = document.createElement(etiqueta);
+  if (clase) nodo.className = clase;
+  if (texto !== undefined) nodo.textContent = texto;
+  return nodo;
+}
+
+/** Guarda y, si el navegador no deja, avisa. */
+function guardarOAvisar() {
+  if (!guardarDatos()) {
+    alert(
+      "No se pudieron guardar los datos en este navegador. " +
+        "Si cerrás la página, vas a perder los cambios."
+    );
+  }
+}
+
+function mascotasDeDueno(duenoId) {
+  return mascotas.filter((mascota) => mascota.duenoId === duenoId);
+}
+
+/** Deja solo los dígitos: "11 2345-6789" y "1123456789" cuentan como el mismo teléfono. */
+function normalizarTelefono(telefono) {
+  return telefono.replace(/[\s-]/g, "");
+}
+
+
+/* ---------- Validación ---------- */
+
+function leerFormularioDueno() {
+  return {
+    nombre: campoDueno.nombre.value.trim(),
+    telefono: campoDueno.telefono.value.trim(),
+    email: campoDueno.email.value.trim(),
+    direccion: campoDueno.direccion.value.trim(),
+  };
+}
+
+/** Devuelve un objeto { campo: "mensaje" } con los errores; vacío si todo está bien. */
+function validarDueno(datos, idActual) {
+  const errores = {};
+
+  if (!datos.nombre) {
+    errores.nombre = "El nombre es obligatorio.";
+  }
+
+  if (!datos.telefono) {
+    errores.telefono = "El teléfono es obligatorio.";
+  } else if (!REGEX_TELEFONO.test(datos.telefono) || !/\d/.test(datos.telefono)) {
+    errores.telefono = "Usá solo números, espacios y guiones.";
+  } else {
+    const repetido = duenos.find(
+      (dueno) =>
+        dueno.id !== idActual &&
+        normalizarTelefono(dueno.telefono) === normalizarTelefono(datos.telefono)
+    );
+    if (repetido) {
+      errores.telefono = `Ya hay un dueño con ese teléfono: ${repetido.nombre}.`;
+    }
+  }
+
+  if (datos.email && !REGEX_EMAIL.test(datos.email)) {
+    errores.email = "Revisá el email: tiene que verse como nombre@correo.com.";
+  }
+
+  return errores;
+}
+
+/** Muestra (o borra, si no hay mensaje) el error debajo de un campo. */
+function mostrarErrorCampo(campo, mensaje) {
+  let nodo = campo.parentElement.querySelector(".mensaje-error");
+
+  if (!mensaje) {
+    if (nodo) nodo.remove();
+    campo.classList.remove("campo-invalido");
+    campo.removeAttribute("aria-invalid");
+    campo.removeAttribute("aria-describedby");
+    return;
+  }
+
+  if (!nodo) {
+    nodo = crearElemento("p", "mensaje-error");
+    nodo.id = `${campo.id}-error`;
+    nodo.setAttribute("role", "alert");
+    campo.parentElement.appendChild(nodo);
+  }
+  nodo.textContent = mensaje;
+  campo.classList.add("campo-invalido");
+  campo.setAttribute("aria-invalid", "true");
+  campo.setAttribute("aria-describedby", nodo.id);
+}
+
+function limpiarErroresDueno() {
+  ["nombre", "telefono", "email", "direccion"].forEach((nombre) =>
+    mostrarErrorCampo(campoDueno[nombre], "")
+  );
+}
+
+// El error de un campo se borra apenas la persona vuelve a escribir en él
+["nombre", "telefono", "email", "direccion"].forEach((nombre) => {
+  campoDueno[nombre].addEventListener("input", () =>
+    mostrarErrorCampo(campoDueno[nombre], "")
+  );
+});
+
+
+/* ---------- Listado ---------- */
+
+function crearTarjetaDueno(dueno) {
+  const tarjeta = crearElemento("li", "dueno");
+  if (dueno.id === idDuenoEnEdicion) tarjeta.classList.add("editando");
+
+  tarjeta.appendChild(crearElemento("h4", "tarjeta__titulo", `👤 ${dueno.nombre}`));
+  tarjeta.appendChild(crearElemento("p", "tarjeta__meta", `📞 ${dueno.telefono}`));
+  if (dueno.email) {
+    tarjeta.appendChild(crearElemento("p", "tarjeta__meta", `✉️ ${dueno.email}`));
+  }
+  if (dueno.direccion) {
+    tarjeta.appendChild(crearElemento("p", "tarjeta__meta", `📍 ${dueno.direccion}`));
+  }
+
+  // Nombres de sus mascotas
+  const suyas = mascotasDeDueno(dueno.id);
+  if (suyas.length === 0) {
+    tarjeta.appendChild(
+      crearElemento("p", "tarjeta__meta", "🐾 Sin mascotas registradas")
+    );
+  } else {
+    tarjeta.appendChild(
+      crearElemento("p", "tarjeta__meta", `🐾 Mascotas (${suyas.length})`)
+    );
+    const chips = crearElemento("div", "chips");
+    suyas.forEach((mascota) => chips.appendChild(crearElemento("span", "chip", mascota.nombre)));
+    tarjeta.appendChild(chips);
+  }
+
+  // Aviso (por ejemplo, cuando no se puede eliminar)
+  if (avisoDueno && avisoDueno.id === dueno.id) {
+    const aviso = crearElemento("p", "aviso", avisoDueno.texto);
+    aviso.setAttribute("role", "alert");
+    tarjeta.appendChild(aviso);
+  }
+
+  // Acciones
+  const acciones = crearElemento("div", "tarjeta__acciones");
+  const botonEditar = crearElemento("button", "btn-chico", "✏️ Editar");
+  botonEditar.type = "button";
+  botonEditar.dataset.accion = "editar";
+  botonEditar.dataset.id = dueno.id;
+
+  const botonEliminar = crearElemento("button", "btn-chico btn-peligro", "🗑️ Eliminar");
+  botonEliminar.type = "button";
+  botonEliminar.dataset.accion = "eliminar";
+  botonEliminar.dataset.id = dueno.id;
+
+  acciones.append(botonEditar, botonEliminar);
+  tarjeta.appendChild(acciones);
+
+  return tarjeta;
+}
+
+function renderDuenos() {
+  const ordenados = [...duenos].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+  // Sin dueños la lista queda vacía y el CSS muestra el mensaje "Todavía no cargaste dueños"
+  listaDuenos.replaceChildren(...ordenados.map(crearTarjetaDueno));
+
+  // Al cambiar los dueños se actualiza el select de la sección Mascotas
+  // y las tarjetas de mascotas (que muestran el nombre del dueño)
+  actualizarSelectDuenos();
+  renderMascotas();
+}
+
+
+/* ---------- Alta y edición ---------- */
+
+function actualizarBotonesFormDueno() {
+  const editando = idDuenoEnEdicion !== null;
+  formDueno.querySelector('button[type="submit"]').textContent = editando
+    ? "Guardar cambios"
+    : "Guardar dueño";
+  formDueno.querySelector('button[type="reset"]').textContent = editando
+    ? "Cancelar edición"
+    : "Cancelar";
+}
+
+formDueno.addEventListener("submit", (evento) => {
+  evento.preventDefault();
+
+  const datos = leerFormularioDueno();
+  const errores = validarDueno(datos, idDuenoEnEdicion);
+
+  limpiarErroresDueno();
+  const camposConError = Object.keys(errores);
+  if (camposConError.length > 0) {
+    camposConError.forEach((nombre) => mostrarErrorCampo(campoDueno[nombre], errores[nombre]));
+    campoDueno[camposConError[0]].focus();
+    return;
+  }
+
+  if (idDuenoEnEdicion) {
+    const existente = duenos.find((dueno) => dueno.id === idDuenoEnEdicion);
+    if (existente) Object.assign(existente, datos);
+  } else {
+    duenos.push({ id: nuevoId(), ...datos });
+  }
+
+  avisoDueno = null;
+  guardarOAvisar();
+
+  // reset() dispara el evento "reset" de abajo, que sale del modo edición y redibuja la lista
+  formDueno.reset();
+});
+
+formDueno.addEventListener("reset", () => {
+  idDuenoEnEdicion = null;
+  campoDueno.id.value = "";
+  limpiarErroresDueno();
+  actualizarBotonesFormDueno();
+  renderDuenos();
+});
+
+function editarDueno(id) {
+  const dueno = duenos.find((item) => item.id === id);
+  if (!dueno) return;
+
+  avisoDueno = null;
+  limpiarErroresDueno();
+
+  idDuenoEnEdicion = dueno.id;
+  campoDueno.id.value = dueno.id;
+  campoDueno.nombre.value = dueno.nombre;
+  campoDueno.telefono.value = dueno.telefono;
+  campoDueno.email.value = dueno.email || "";
+  campoDueno.direccion.value = dueno.direccion || "";
+
+  actualizarBotonesFormDueno();
+  renderDuenos();
+
+  formDueno.scrollIntoView({ behavior: "smooth", block: "start" });
+  campoDueno.nombre.focus({ preventScroll: true });
+}
+
+
+/* ---------- Baja ---------- */
+
+function eliminarDueno(id) {
+  const posicion = duenos.findIndex((item) => item.id === id);
+  if (posicion === -1) return;
+  const dueno = duenos[posicion];
+
+  // No se puede borrar un dueño con mascotas: se avisa cuántas tiene
+  const suyas = mascotasDeDueno(id);
+  if (suyas.length > 0) {
+    const cantidad = suyas.length;
+    const nombres = suyas.map((mascota) => mascota.nombre).join(", ");
+    avisoDueno = {
+      id,
+      texto:
+        `No se puede eliminar a ${dueno.nombre}: tiene ${cantidad} ` +
+        `${cantidad === 1 ? "mascota" : "mascotas"} (${nombres}). ` +
+        `Primero eliminá ${cantidad === 1 ? "esa mascota" : "esas mascotas"} ` +
+        `o pasala${cantidad === 1 ? "" : "s"} a otro dueño.`,
+    };
+    renderDuenos();
+    return;
+  }
+
+  if (!confirm(`¿Eliminar a ${dueno.nombre}? Esta acción no se puede deshacer.`)) return;
+
+  duenos.splice(posicion, 1);
+  avisoDueno = null;
+  guardarOAvisar();
+
+  if (idDuenoEnEdicion === id) {
+    formDueno.reset(); // sale del modo edición y redibuja
+  } else {
+    renderDuenos();
+  }
+}
+
+// Un solo "oyente" para los botones de todas las tarjetas
+listaDuenos.addEventListener("click", (evento) => {
+  const boton = evento.target.closest("button[data-accion]");
+  if (!boton) return;
+
+  if (boton.dataset.accion === "editar") editarDueno(boton.dataset.id);
+  if (boton.dataset.accion === "eliminar") eliminarDueno(boton.dataset.id);
+});
+
+actualizarBotonesFormDueno();
+
+
+/* ==========================================================================
+   6. MASCOTAS: alta, listado, edición y baja
+   ========================================================================== */
+
+const formMascota = document.getElementById("form-mascota");
+const listaMascotas = document.getElementById("lista-mascotas");
+const campoMascota = {
+  id: document.getElementById("mascota-id"),
+  duenoId: document.getElementById("mascota-dueno"),
+  nombre: document.getElementById("mascota-nombre"),
+  especie: document.getElementById("mascota-especie"),
+  raza: document.getElementById("mascota-raza"),
+  sexo: document.getElementById("mascota-sexo"),
+  nacimiento: document.getElementById("mascota-nacimiento"),
+  peso: document.getElementById("mascota-peso"),
+};
+const CAMPOS_MASCOTA = ["duenoId", "nombre", "especie", "raza", "sexo", "nacimiento", "peso"];
+
+formMascota.noValidate = true;
+
+const PESO_MINIMO = 0.1;
+const PESO_MAXIMO = 120;
+const ANIO_MINIMO_NACIMIENTO = 1900;
+
+// Un turno está pendiente mientras no esté atendido ni cancelado
+// (cuenta como pendiente "Pendiente", "Confirmado" o un turno sin estado)
+const ESTADOS_CERRADOS = ["Atendido", "Cancelado"];
+
+let idMascotaEnEdicion = null;
+let avisoMascota = null; // { id, texto }
+
+function turnoEstaPendiente(turno) {
+  return !ESTADOS_CERRADOS.includes(turno.estado);
+}
+
+/** Hoy en formato AAAA-MM-DD según la fecha local (sirve para comparar con <input type="date">). */
+function hoyISO() {
+  const hoy = new Date();
+  const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+  const dia = String(hoy.getDate()).padStart(2, "0");
+  return `${hoy.getFullYear()}-${mes}-${dia}`;
+}
+
+/** Minúsculas y sin tildes: "Fido", "fido" y "FÍDO" cuentan como el mismo nombre. */
+function normalizarNombre(texto) {
+  return texto
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function formatearPeso(peso) {
+  return `${peso.toLocaleString("es-AR")} kg`;
+}
+
+// Que el selector de fecha no deje elegir días futuros, y límites del peso
+campoMascota.nacimiento.max = hoyISO();
+campoMascota.peso.min = String(PESO_MINIMO);
+campoMascota.peso.max = String(PESO_MAXIMO);
+
+
+/* ---------- Select de dueños ---------- */
+
+/** Rearma las opciones del select de dueños (se llama cada vez que cambian los dueños). */
+function actualizarSelectDuenos() {
+  const select = campoMascota.duenoId;
+  const seleccionado = select.value;
+
+  const inicial = document.createElement("option");
+  inicial.value = "";
+  inicial.textContent = duenos.length ? "Elegí un dueño" : "Primero cargá un dueño";
+
+  const opciones = [...duenos]
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))
+    .map((dueno) => {
+      const opcion = document.createElement("option");
+      opcion.value = dueno.id;
+      opcion.textContent = `${dueno.nombre} (${dueno.telefono})`;
+      return opcion;
+    });
+
+  select.replaceChildren(inicial, ...opciones);
+  if (duenos.some((dueno) => dueno.id === seleccionado)) select.value = seleccionado;
+}
+
+
+/* ---------- Validación ---------- */
+
+function leerFormularioMascota() {
+  const textoPeso = campoMascota.peso.value.trim().replace(",", ".");
+  // Si escribieron algo que el navegador no entiende como número, value llega vacío
+  const pesoIlegible = campoMascota.peso.validity.badInput;
+
+  return {
+    duenoId: campoMascota.duenoId.value,
+    nombre: campoMascota.nombre.value.trim(),
+    especie: campoMascota.especie.value,
+    raza: campoMascota.raza.value.trim(),
+    sexo: campoMascota.sexo.value,
+    nacimiento: campoMascota.nacimiento.value,
+    peso: textoPeso === "" ? null : Number(textoPeso),
+    pesoIlegible,
+  };
+}
+
+/** Devuelve el mensaje de error de una fecha de nacimiento, o "" si está bien. */
+function errorFechaNacimiento(texto) {
+  if (!texto) return "La fecha de nacimiento es obligatoria.";
+
+  const partes = /^(\d{4})-(\d{2})-(\d{2})$/.exec(texto);
+  if (!partes) return "La fecha de nacimiento no es válida.";
+
+  const [anio, mes, dia] = partes.slice(1).map(Number);
+  const fecha = new Date(anio, mes - 1, dia);
+  const existe =
+    fecha.getFullYear() === anio && fecha.getMonth() === mes - 1 && fecha.getDate() === dia;
+  if (!existe || anio < ANIO_MINIMO_NACIMIENTO) return "La fecha de nacimiento no es válida.";
+
+  if (texto > hoyISO()) return "La fecha de nacimiento no puede ser futura.";
+  return "";
+}
+
+/** Devuelve { campo: "mensaje" } con los errores; vacío si todo está bien. */
+function validarMascota(datos, idActual) {
+  const errores = {};
+
+  if (!datos.duenoId) {
+    errores.duenoId = duenos.length
+      ? "Elegí un dueño."
+      : "Primero cargá un dueño en la sección Dueños.";
+  } else if (!duenos.some((dueno) => dueno.id === datos.duenoId)) {
+    errores.duenoId = "El dueño elegido ya no existe. Elegí otro.";
+  }
+
+  if (!datos.nombre) {
+    errores.nombre = "El nombre es obligatorio.";
+  } else if (datos.duenoId) {
+    const repetida = mascotas.find(
+      (mascota) =>
+        mascota.id !== idActual &&
+        mascota.duenoId === datos.duenoId &&
+        normalizarNombre(mascota.nombre) === normalizarNombre(datos.nombre)
+    );
+    if (repetida) {
+      errores.nombre = `Este dueño ya tiene una mascota llamada ${repetida.nombre}.`;
+    }
+  }
+
+  if (!datos.especie) {
+    errores.especie = "Elegí una especie.";
+  }
+
+  const errorFecha = errorFechaNacimiento(datos.nacimiento);
+  if (errorFecha) errores.nacimiento = errorFecha;
+
+  if (datos.pesoIlegible || Number.isNaN(datos.peso)) {
+    errores.peso = "Ingresá un peso válido, por ejemplo 4,5.";
+  } else if (datos.peso !== null && (datos.peso < PESO_MINIMO || datos.peso > PESO_MAXIMO)) {
+    errores.peso = "El peso tiene que estar entre 0,1 y 120 kg.";
+  }
+
+  return errores;
+}
+
+function limpiarErroresMascota() {
+  CAMPOS_MASCOTA.forEach((nombre) => mostrarErrorCampo(campoMascota[nombre], ""));
+}
+
+CAMPOS_MASCOTA.forEach((nombre) => {
+  const borrarError = () => mostrarErrorCampo(campoMascota[nombre], "");
+  campoMascota[nombre].addEventListener("input", borrarError);
+  campoMascota[nombre].addEventListener("change", borrarError);
+});
+
+// Si cambia el dueño, el aviso de nombre repetido puede dejar de aplicar
+campoMascota.duenoId.addEventListener("change", () =>
+  mostrarErrorCampo(campoMascota.nombre, "")
+);
+
+
+/* ---------- Listado ---------- */
+
+function crearTarjetaMascota(mascota) {
+  const tarjeta = crearElemento("li", "mascota");
+  tarjeta.dataset.especie = mascota.especie; // el CSS pone el emoji según este dato
+  if (mascota.id === idMascotaEnEdicion) tarjeta.classList.add("editando");
+
+  const info = crearElemento("div", "mascota__info");
+  info.appendChild(crearElemento("h4", "tarjeta__titulo", mascota.nombre));
+
+  const descripcion = [mascota.especie, mascota.raza, mascota.sexo].filter(Boolean).join(", ");
+  info.appendChild(crearElemento("p", "tarjeta__meta", descripcion));
+
+  const edadTexto = edad(mascota.nacimiento);
+  if (edadTexto) {
+    info.appendChild(crearElemento("p", "tarjeta__meta", `🎂 ${edadTexto}`));
+  }
+
+  if (typeof mascota.peso === "number") {
+    info.appendChild(crearElemento("p", "tarjeta__meta", `⚖️ ${formatearPeso(mascota.peso)}`));
+  }
+
+  const dueno = duenos.find((item) => item.id === mascota.duenoId);
+  info.appendChild(
+    crearElemento("p", "tarjeta__meta", `👤 Dueño: ${dueno ? dueno.nombre : "sin dueño"}`)
+  );
+
+  if (avisoMascota && avisoMascota.id === mascota.id) {
+    const aviso = crearElemento("p", "aviso", avisoMascota.texto);
+    aviso.setAttribute("role", "alert");
+    info.appendChild(aviso);
+  }
+
+  const acciones = crearElemento("div", "tarjeta__acciones");
+  const botonEditar = crearElemento("button", "btn-chico", "✏️ Editar");
+  botonEditar.type = "button";
+  botonEditar.dataset.accion = "editar";
+  botonEditar.dataset.id = mascota.id;
+
+  const botonEliminar = crearElemento("button", "btn-chico btn-peligro", "🗑️ Eliminar");
+  botonEliminar.type = "button";
+  botonEliminar.dataset.accion = "eliminar";
+  botonEliminar.dataset.id = mascota.id;
+
+  acciones.append(botonEditar, botonEliminar);
+  info.appendChild(acciones);
+
+  tarjeta.appendChild(info);
+  return tarjeta;
+}
+
+function renderMascotas() {
+  const ordenadas = [...mascotas].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+  // Sin mascotas la lista queda vacía y el CSS muestra "Todavía no cargaste mascotas"
+  listaMascotas.replaceChildren(...ordenadas.map(crearTarjetaMascota));
+
+  // Al cambiar mascotas o dueños se actualiza el select de la sección Turnos
+  // y la agenda (que muestra el nombre de la mascota y del dueño)
+  actualizarSelectMascotas();
+  renderAgenda();
+}
+
+
+/* ---------- Alta y edición ---------- */
+
+function actualizarBotonesFormMascota() {
+  const editando = idMascotaEnEdicion !== null;
+  formMascota.querySelector('button[type="submit"]').textContent = editando
+    ? "Guardar cambios"
+    : "Guardar mascota";
+  formMascota.querySelector('button[type="reset"]').textContent = editando
+    ? "Cancelar edición"
+    : "Cancelar";
+}
+
+formMascota.addEventListener("submit", (evento) => {
+  evento.preventDefault();
+
+  const datos = leerFormularioMascota();
+  const errores = validarMascota(datos, idMascotaEnEdicion);
+
+  limpiarErroresMascota();
+  const camposConError = Object.keys(errores);
+  if (camposConError.length > 0) {
+    camposConError.forEach((nombre) => mostrarErrorCampo(campoMascota[nombre], errores[nombre]));
+    // Se enfoca el primer campo con error en el orden en que aparecen en el formulario
+    const primero = CAMPOS_MASCOTA.find((nombre) => errores[nombre]);
+    campoMascota[primero].focus();
+    return;
+  }
+
+  const registro = {
+    duenoId: datos.duenoId,
+    nombre: datos.nombre,
+    especie: datos.especie,
+    raza: datos.raza,
+    sexo: datos.sexo,
+    nacimiento: datos.nacimiento,
+    peso: datos.peso, // número o null
+  };
+
+  if (idMascotaEnEdicion) {
+    const existente = mascotas.find((mascota) => mascota.id === idMascotaEnEdicion);
+    if (existente) Object.assign(existente, registro);
+  } else {
+    mascotas.push({ id: nuevoId(), ...registro });
+  }
+
+  avisoMascota = null;
+  guardarOAvisar();
+
+  formMascota.reset(); // sale del modo edición y redibuja las mascotas
+  renderDuenos(); // actualiza las mascotas que se ven en la tarjeta de cada dueño
+});
+
+formMascota.addEventListener("reset", () => {
+  idMascotaEnEdicion = null;
+  campoMascota.id.value = "";
+  limpiarErroresMascota();
+  actualizarBotonesFormMascota();
+  renderMascotas();
+});
+
+function editarMascota(id) {
+  const mascota = mascotas.find((item) => item.id === id);
+  if (!mascota) return;
+
+  avisoMascota = null;
+  limpiarErroresMascota();
+
+  idMascotaEnEdicion = mascota.id;
+  campoMascota.id.value = mascota.id;
+  campoMascota.duenoId.value = mascota.duenoId;
+  campoMascota.nombre.value = mascota.nombre;
+  campoMascota.especie.value = mascota.especie;
+  campoMascota.raza.value = mascota.raza || "";
+  campoMascota.sexo.value = mascota.sexo || "";
+  campoMascota.nacimiento.value = mascota.nacimiento || "";
+  campoMascota.peso.value = typeof mascota.peso === "number" ? mascota.peso : "";
+
+  actualizarBotonesFormMascota();
+  renderMascotas();
+
+  formMascota.scrollIntoView({ behavior: "smooth", block: "start" });
+  campoMascota.nombre.focus({ preventScroll: true });
+}
+
+
+/* ---------- Baja ---------- */
+
+function eliminarMascota(id) {
+  const posicion = mascotas.findIndex((item) => item.id === id);
+  if (posicion === -1) return;
+  const mascota = mascotas[posicion];
+
+  // No se puede borrar una mascota con turnos pendientes
+  const pendientes = turnos.filter(
+    (turno) => turno.mascotaId === id && turnoEstaPendiente(turno)
+  );
+  if (pendientes.length > 0) {
+    const cantidad = pendientes.length;
+    avisoMascota = {
+      id,
+      texto:
+        `No se puede eliminar a ${mascota.nombre}: tiene ${cantidad} ` +
+        `${cantidad === 1 ? "turno pendiente" : "turnos pendientes"}. ` +
+        `Primero cancelá ${cantidad === 1 ? "ese turno" : "esos turnos"} o marcalo` +
+        `${cantidad === 1 ? "" : "s"} como atendido${cantidad === 1 ? "" : "s"}.`,
+    };
+    renderMascotas();
+    return;
+  }
+
+  // Lo que se borra junto con la mascota (turnos ya cerrados y su historia clínica)
+  const turnosPrevios = turnos.filter((turno) => turno.mascotaId === id).length;
+  const consultasPrevias = consultas.filter((consulta) => consulta.mascotaId === id).length;
+
+  let mensaje = `¿Eliminar a ${mascota.nombre}? Esta acción no se puede deshacer.`;
+  const tambien = [];
+  if (consultasPrevias > 0) {
+    tambien.push(`${consultasPrevias} ${consultasPrevias === 1 ? "consulta" : "consultas"}`);
+  }
+  if (turnosPrevios > 0) {
+    tambien.push(`${turnosPrevios} ${turnosPrevios === 1 ? "turno anterior" : "turnos anteriores"}`);
+  }
+  if (tambien.length > 0) {
+    mensaje += `\n\nTambién se borrarán sus ${tambien.join(" y ")}.`;
+  }
+
+  if (!confirm(mensaje)) return;
+
+  mascotas.splice(posicion, 1);
+  for (let i = turnos.length - 1; i >= 0; i--) {
+    if (turnos[i].mascotaId === id) turnos.splice(i, 1);
+  }
+  for (let i = consultas.length - 1; i >= 0; i--) {
+    if (consultas[i].mascotaId === id) consultas.splice(i, 1);
+  }
+
+  avisoMascota = null;
+  guardarOAvisar();
+
+  if (idMascotaEnEdicion === id) formMascota.reset(); // sale del modo edición
+  renderDuenos(); // actualiza dueños y redibuja las mascotas
+}
+
+listaMascotas.addEventListener("click", (evento) => {
+  const boton = evento.target.closest("button[data-accion]");
+  if (!boton) return;
+
+  if (boton.dataset.accion === "editar") editarMascota(boton.dataset.id);
+  if (boton.dataset.accion === "eliminar") eliminarMascota(boton.dataset.id);
+});
+
+
+actualizarBotonesFormMascota();
+
+
+/* ==========================================================================
+   7. TURNOS: alta, edición, baja, estados y agenda por día
+   Cada turno: { id, mascotaId, fecha (AAAA-MM-DD), hora (HH:MM),
+                 motivo, veterinario, estado: "Pendiente" | "Atendido" | "Cancelado" }
+   ========================================================================== */
+
+const formTurno = document.getElementById("form-turno");
+const agendaTurnos = document.getElementById("agenda-turnos");
+const agendaTitulo = document.getElementById("agenda-titulo");
+const agendaFecha = document.getElementById("agenda-fecha");
+const campoTurno = {
+  id: document.getElementById("turno-id"),
+  mascotaId: document.getElementById("turno-mascota"),
+  fecha: document.getElementById("turno-fecha"),
+  hora: document.getElementById("turno-hora"),
+  motivo: document.getElementById("turno-motivo"),
+  veterinario: document.getElementById("turno-veterinario"),
+};
+const CAMPOS_TURNO = ["mascotaId", "fecha", "hora", "motivo", "veterinario"];
+
+formTurno.noValidate = true;
+
+const HORA_APERTURA = "09:00";
+const HORA_CIERRE = "20:00"; // el turno de las 20:00 todavía es válido
+
+let idTurnoEnEdicion = null;
+let diaAgenda = hoyISO(); // día que se está viendo en la agenda
+
+campoTurno.fecha.min = hoyISO();
+campoTurno.hora.min = HORA_APERTURA;
+campoTurno.hora.max = HORA_CIERRE;
+
+
+/* ---------- Fechas ---------- */
+
+/** Convierte un Date a AAAA-MM-DD (fecha local). */
+function aISO(fecha) {
+  const mes = String(fecha.getMonth() + 1).padStart(2, "0");
+  const dia = String(fecha.getDate()).padStart(2, "0");
+  return `${fecha.getFullYear()}-${mes}-${dia}`;
+}
+
+/** Suma (o resta) días a una fecha AAAA-MM-DD. */
+function sumarDias(iso, cantidad) {
+  const [anio, mes, dia] = iso.split("-").map(Number);
+  return aISO(new Date(anio, mes - 1, dia + cantidad));
+}
+
+/** true si el texto es AAAA-MM-DD y es un día que existe (no 2026-02-31). */
+function fechaISOExiste(texto) {
+  const partes = /^(\d{4})-(\d{2})-(\d{2})$/.exec(texto || "");
+  if (!partes) return false;
+  const [anio, mes, dia] = partes.slice(1).map(Number);
+  const fecha = new Date(anio, mes - 1, dia);
+  return fecha.getFullYear() === anio && fecha.getMonth() === mes - 1 && fecha.getDate() === dia;
+}
+
+/** "2026-11-13" -> "13/11/2026" */
+function fechaCorta(iso) {
+  const [anio, mes, dia] = iso.split("-");
+  return `${dia}/${mes}/${anio}`;
+}
+
+/** "2026-11-13" -> "Viernes, 13 de noviembre de 2026" */
+function fechaLarga(iso) {
+  const [anio, mes, dia] = iso.split("-").map(Number);
+  const texto = new Date(anio, mes - 1, dia).toLocaleDateString("es-AR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
+function normalizarVeterinario(texto) {
+  return normalizarNombre(texto).replace(/\s+/g, " ");
+}
+
+
+/* ---------- Select de mascotas ---------- */
+
+/** Rearma el select de mascotas (se llama cada vez que cambian mascotas o dueños). */
+function actualizarSelectMascotas() {
+  const select = campoTurno.mascotaId;
+  const seleccionada = select.value;
+
+  const inicial = document.createElement("option");
+  inicial.value = "";
+  inicial.textContent = mascotas.length ? "Elegí una mascota" : "Primero cargá una mascota";
+
+  const opciones = [...mascotas]
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))
+    .map((mascota) => {
+      const dueno = duenos.find((item) => item.id === mascota.duenoId);
+      const opcion = document.createElement("option");
+      opcion.value = mascota.id;
+      opcion.textContent = `${mascota.nombre} (${dueno ? dueno.nombre : "sin dueño"})`;
+      return opcion;
+    });
+
+  select.replaceChildren(inicial, ...opciones);
+  if (mascotas.some((mascota) => mascota.id === seleccionada)) select.value = seleccionada;
+}
+
+
+/* ---------- Validación ---------- */
+
+function leerFormularioTurno() {
+  return {
+    mascotaId: campoTurno.mascotaId.value,
+    fecha: campoTurno.fecha.value,
+    hora: campoTurno.hora.value,
+    motivo: campoTurno.motivo.value.trim(),
+    veterinario: campoTurno.veterinario.value.trim(),
+  };
+}
+
+/** Devuelve { campo: "mensaje" } con los errores; vacío si todo está bien. */
+function validarTurno(datos, idActual) {
+  const errores = {};
+  const existente = idActual ? turnos.find((turno) => turno.id === idActual) : null;
+
+  // Mascota
+  if (!datos.mascotaId) {
+    errores.mascotaId = mascotas.length
+      ? "Elegí una mascota."
+      : "Primero cargá una mascota en la sección Mascotas.";
+  } else if (!mascotas.some((mascota) => mascota.id === datos.mascotaId)) {
+    errores.mascotaId = "La mascota elegida ya no existe. Elegí otra.";
+  }
+
+  // Fecha: no puede ser pasada (hoy sí). Al editar, se tolera la fecha que ya tenía el turno.
+  if (!datos.fecha) {
+    errores.fecha = "La fecha es obligatoria.";
+  } else if (!fechaISOExiste(datos.fecha)) {
+    errores.fecha = "La fecha no es válida.";
+  } else if (datos.fecha < hoyISO() && !(existente && existente.fecha === datos.fecha)) {
+    errores.fecha = "La fecha no puede ser pasada.";
+  }
+
+  // Hora: entre las 9:00 y las 20:00 (ambas incluidas)
+  if (!datos.hora) {
+    errores.hora = "La hora es obligatoria.";
+  } else if (!/^\d{2}:\d{2}$/.test(datos.hora) || datos.hora < HORA_APERTURA || datos.hora > HORA_CIERRE) {
+    errores.hora = "La hora tiene que estar entre las 9:00 y las 20:00.";
+  }
+
+  if (!datos.motivo) errores.motivo = "El motivo es obligatorio.";
+  if (!datos.veterinario) errores.veterinario = "El veterinario es obligatorio.";
+
+  // El mismo veterinario no puede tener dos turnos a la misma fecha y hora
+  // (un turno cancelado libera el horario)
+  const ocupaHorario = !existente || existente.estado !== "Cancelado";
+  if (ocupaHorario && !errores.fecha && !errores.hora && !errores.veterinario) {
+    const choque = turnos.find(
+      (turno) =>
+        turno.id !== idActual &&
+        turno.estado !== "Cancelado" &&
+        turno.fecha === datos.fecha &&
+        turno.hora === datos.hora &&
+        normalizarVeterinario(turno.veterinario) === normalizarVeterinario(datos.veterinario)
+    );
+    if (choque) {
+      const mascotaChoque = mascotas.find((mascota) => mascota.id === choque.mascotaId);
+      errores.veterinario =
+        `${choque.veterinario} ya tiene un turno el ${fechaCorta(datos.fecha)} a las ${datos.hora}` +
+        (mascotaChoque ? ` (${mascotaChoque.nombre}).` : ".");
+    }
+  }
+
+  return errores;
+}
+
+function limpiarErroresTurno() {
+  CAMPOS_TURNO.forEach((nombre) => mostrarErrorCampo(campoTurno[nombre], ""));
+}
+
+CAMPOS_TURNO.forEach((nombre) => {
+  const borrarError = () => mostrarErrorCampo(campoTurno[nombre], "");
+  campoTurno[nombre].addEventListener("input", borrarError);
+  campoTurno[nombre].addEventListener("change", borrarError);
+});
+
+// El choque de horario depende de fecha, hora y veterinario: si cambia uno, se borra ese aviso
+["fecha", "hora"].forEach((nombre) => {
+  campoTurno[nombre].addEventListener("change", () =>
+    mostrarErrorCampo(campoTurno.veterinario, "")
+  );
+});
+
+// Al elegir una fecha en el formulario, la agenda muestra ese día (para ver qué horarios hay libres)
+campoTurno.fecha.addEventListener("change", () => {
+  if (fechaISOExiste(campoTurno.fecha.value)) irADia(campoTurno.fecha.value);
+});
+
+
+/* ---------- Agenda del día ---------- */
+
+function estadoDe(turno) {
+  return turno.estado || "Pendiente";
+}
+
+function crearTarjetaTurno(turno) {
+  const tarjeta = crearElemento("li", "turno");
+  if (turno.id === idTurnoEnEdicion) tarjeta.classList.add("editando");
+
+  const mascota = mascotas.find((item) => item.id === turno.mascotaId);
+  const dueno = mascota ? duenos.find((item) => item.id === mascota.duenoId) : null;
+  const estado = estadoDe(turno);
+
+  tarjeta.appendChild(crearElemento("div", "turno__cuando", `🕘 ${turno.hora}`));
+
+  const info = crearElemento("div", "turno__info");
+
+  const titulo = crearElemento("h4", "tarjeta__titulo");
+  titulo.append(
+    `🐾 ${mascota ? mascota.nombre : "Mascota eliminada"} `,
+    crearElemento("span", `estado estado--${estado.toLowerCase()}`, estado)
+  );
+  info.appendChild(titulo);
+
+  info.appendChild(crearElemento("p", "tarjeta__meta", `📝 ${turno.motivo}`));
+  info.appendChild(
+    crearElemento("p", "tarjeta__meta", `👤 Dueño: ${dueno ? dueno.nombre : "sin dueño"}`)
+  );
+  info.appendChild(crearElemento("p", "tarjeta__meta", `🩺 ${turno.veterinario}`));
+
+  const acciones = crearElemento("div", "tarjeta__acciones");
+  const agregarBoton = (texto, accion, clases) => {
+    const boton = crearElemento("button", clases, texto);
+    boton.type = "button";
+    boton.dataset.accion = accion;
+    boton.dataset.id = turno.id;
+    acciones.appendChild(boton);
+  };
+
+  if (turnoEstaPendiente(turno)) {
+    agregarBoton("✅ Atendido", "atendido", "btn-chico");
+    agregarBoton("❌ Cancelar", "cancelar", "btn-chico btn-peligro");
+  }
+  agregarBoton("✏️ Editar", "editar", "btn-chico");
+  agregarBoton("🗑️ Eliminar", "eliminar", "btn-chico btn-peligro");
+  info.appendChild(acciones);
+
+  tarjeta.appendChild(info);
+  return tarjeta;
+}
+
+function renderAgenda() {
+  const delDia = turnos
+    .filter((turno) => turno.fecha === diaAgenda)
+    .sort(
+      (a, b) =>
+        a.hora.localeCompare(b.hora) || a.veterinario.localeCompare(b.veterinario, "es")
+    );
+
+  const cantidad = delDia.length;
+  const resumen =
+    cantidad === 0 ? "sin turnos" : cantidad === 1 ? "1 turno" : `${cantidad} turnos`;
+  const esHoy = diaAgenda === hoyISO();
+  agendaTitulo.textContent = `${fechaLarga(diaAgenda)}${esHoy ? " (hoy)" : ""}: ${resumen}`;
+  agendaFecha.value = diaAgenda;
+
+  // Sin turnos la lista queda vacía y el CSS muestra "No hay turnos para este día"
+  agendaTurnos.replaceChildren(...delDia.map(crearTarjetaTurno));
+}
+
+function irADia(iso) {
+  if (!fechaISOExiste(iso)) return;
+  diaAgenda = iso;
+  renderAgenda();
+}
+
+document.getElementById("agenda-anterior").addEventListener("click", () =>
+  irADia(sumarDias(diaAgenda, -1))
+);
+document.getElementById("agenda-siguiente").addEventListener("click", () =>
+  irADia(sumarDias(diaAgenda, 1))
+);
+document.getElementById("agenda-hoy").addEventListener("click", () => irADia(hoyISO()));
+agendaFecha.addEventListener("change", () => irADia(agendaFecha.value));
+
+
+/* ---------- Alta y edición ---------- */
+
+function actualizarBotonesFormTurno() {
+  const editando = idTurnoEnEdicion !== null;
+  formTurno.querySelector('button[type="submit"]').textContent = editando
+    ? "Guardar cambios"
+    : "Agendar turno";
+  formTurno.querySelector('button[type="reset"]').textContent = editando
+    ? "Cancelar edición"
+    : "Cancelar";
+}
+
+/** El formulario nuevo arranca con el día que se está viendo en la agenda (si no es pasado). */
+function precargarFechaTurno() {
+  campoTurno.fecha.value = diaAgenda >= hoyISO() ? diaAgenda : "";
+}
+
+formTurno.addEventListener("submit", (evento) => {
+  evento.preventDefault();
+
+  const datos = leerFormularioTurno();
+  const errores = validarTurno(datos, idTurnoEnEdicion);
+
+  limpiarErroresTurno();
+  const camposConError = Object.keys(errores);
+  if (camposConError.length > 0) {
+    camposConError.forEach((nombre) => mostrarErrorCampo(campoTurno[nombre], errores[nombre]));
+    const primero = CAMPOS_TURNO.find((nombre) => errores[nombre]);
+    campoTurno[primero].focus();
+    return;
+  }
+
+  if (idTurnoEnEdicion) {
+    const existente = turnos.find((turno) => turno.id === idTurnoEnEdicion);
+    if (existente) Object.assign(existente, datos); // conserva su estado
+  } else {
+    turnos.push({ id: nuevoId(), ...datos, estado: "Pendiente" });
+  }
+
+  guardarOAvisar();
+
+  formTurno.reset(); // sale del modo edición y redibuja la agenda
+  irADia(datos.fecha); // la agenda muestra el día del turno recién guardado
+});
+
+formTurno.addEventListener("reset", () => {
+  idTurnoEnEdicion = null;
+  campoTurno.id.value = "";
+  limpiarErroresTurno();
+  actualizarBotonesFormTurno();
+  renderAgenda();
+  // reset() vacía los campos después de este evento, por eso la fecha se carga un instante más tarde
+  setTimeout(precargarFechaTurno, 0);
+});
+
+function editarTurno(id) {
+  const turno = turnos.find((item) => item.id === id);
+  if (!turno) return;
+
+  limpiarErroresTurno();
+
+  idTurnoEnEdicion = turno.id;
+  campoTurno.id.value = turno.id;
+  campoTurno.mascotaId.value = turno.mascotaId;
+  campoTurno.fecha.value = turno.fecha;
+  campoTurno.hora.value = turno.hora;
+  campoTurno.motivo.value = turno.motivo;
+  campoTurno.veterinario.value = turno.veterinario;
+
+  actualizarBotonesFormTurno();
+  irADia(turno.fecha); // también redibuja la agenda con la tarjeta resaltada
+
+  formTurno.scrollIntoView({ behavior: "smooth", block: "start" });
+  campoTurno.mascotaId.focus({ preventScroll: true });
+}
+
+
+/* ---------- Estados y baja ---------- */
+
+function descripcionTurno(turno) {
+  const mascota = mascotas.find((item) => item.id === turno.mascotaId);
+  const nombre = mascota ? mascota.nombre : "la mascota";
+  return `el turno de ${nombre} del ${fechaCorta(turno.fecha)} a las ${turno.hora}`;
+}
+
+function marcarAtendido(id) {
+  const turno = turnos.find((item) => item.id === id);
+  if (!turno || !turnoEstaPendiente(turno)) return;
+
+  turno.estado = "Atendido";
+  guardarOAvisar();
+  renderAgenda();
+  abrirFormularioConsulta(turno);
+}
+
+function cancelarTurno(id) {
+  const turno = turnos.find((item) => item.id === id);
+  if (!turno || !turnoEstaPendiente(turno)) return;
+  if (!confirm(`¿Cancelar ${descripcionTurno(turno)}?`)) return;
+
+  turno.estado = "Cancelado";
+  guardarOAvisar();
+  renderAgenda();
+}
+
+function eliminarTurno(id) {
+  const posicion = turnos.findIndex((item) => item.id === id);
+  if (posicion === -1) return;
+  const turno = turnos[posicion];
+
+  if (!confirm(`¿Eliminar ${descripcionTurno(turno)}? Esta acción no se puede deshacer.`)) return;
+
+  turnos.splice(posicion, 1);
+  guardarOAvisar();
+
+  if (idTurnoEnEdicion === id) {
+    formTurno.reset(); // sale del modo edición y redibuja
+  } else {
+    renderAgenda();
+  }
+}
+
+agendaTurnos.addEventListener("click", (evento) => {
+  const boton = evento.target.closest("button[data-accion]");
+  if (!boton) return;
+
+  const { accion, id } = boton.dataset;
+  if (accion === "atendido") marcarAtendido(id);
+  if (accion === "cancelar") cancelarTurno(id);
+  if (accion === "editar") editarTurno(id);
+  if (accion === "eliminar") eliminarTurno(id);
+});
+
+
+
+/* ==========================================================================
+   8. CONSULTAS, HISTORIAS CLÍNICAS Y BUSCADOR GENERAL
+   ========================================================================== */
+
+const formConsulta = document.getElementById("form-consulta");
+const lineaTiempo = document.getElementById("linea-tiempo");
+const selectorHistoria = document.getElementById("historia-mascota");
+const campoConsulta = {
+  id: document.getElementById("consulta-id"),
+  turnoId: document.getElementById("consulta-turno-id"),
+  fecha: document.getElementById("consulta-fecha"),
+  motivo: document.getElementById("consulta-motivo"),
+  peso: document.getElementById("consulta-peso"),
+  diagnostico: document.getElementById("consulta-diagnostico"),
+  tratamiento: document.getElementById("consulta-tratamiento"),
+  vacunas: document.getElementById("consulta-vacunas"),
+  proximoControl: document.getElementById("consulta-proximo-control"),
+  observaciones: document.getElementById("consulta-observaciones"),
+};
+const buscador = document.getElementById("buscador");
+const listaResultados = document.getElementById("lista-resultados");
+let idConsultaEnEdicion = null;
+
+formConsulta.noValidate = true;
+campoConsulta.peso.min = String(PESO_MINIMO);
+campoConsulta.peso.max = String(PESO_MAXIMO);
+
+function actualizarSelectHistoria() {
+  const seleccionado = selectorHistoria.value;
+  const inicial = document.createElement("option");
+  inicial.value = "";
+  inicial.textContent = mascotas.length ? "Elegí una mascota" : "Primero cargá una mascota";
+  const opciones = [...mascotas]
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))
+    .map((mascota) => {
+      const opcion = document.createElement("option");
+      opcion.value = mascota.id;
+      opcion.textContent = mascota.nombre;
+      return opcion;
+    });
+  selectorHistoria.replaceChildren(inicial, ...opciones);
+  if (mascotas.some((m) => m.id === seleccionado)) selectorHistoria.value = seleccionado;
+}
+
+function renderHistoria(mascotaId = selectorHistoria.value) {
+  if (mascotaId && mascotas.some((m) => m.id === mascotaId)) {
+    selectorHistoria.value = mascotaId;
+  }
+  const seleccionada = selectorHistoria.value;
+  const registros = consultas
+    .filter((consulta) => consulta.mascotaId === seleccionada)
+    .sort((a, b) => (b.fecha || "").localeCompare(a.fecha || "") ||
+      String(b.creadaEn || b.id).localeCompare(String(a.creadaEn || a.id)));
+
+  const tarjetas = registros.map((consulta) => {
+    const tarjeta = crearElemento("li", "consulta");
+    const fecha = crearElemento("time", "consulta__fecha", fechaCorta(consulta.fecha));
+    fecha.dateTime = consulta.fecha || "";
+    tarjeta.appendChild(fecha);
+    tarjeta.appendChild(crearElemento("h4", "tarjeta__titulo", consulta.motivo || "Consulta"));
+    tarjeta.appendChild(crearElemento("p", "consulta__detalle", `⚖️ Peso: ${formatearPeso(Number(consulta.peso))}`));
+    tarjeta.appendChild(crearElemento("p", "consulta__detalle", `🩺 Diagnóstico: ${consulta.diagnostico || "—"}`));
+    tarjeta.appendChild(crearElemento("p", "consulta__detalle", `💊 Tratamiento: ${consulta.tratamiento || "—"}`));
+    if (consulta.vacunas) tarjeta.appendChild(crearElemento("p", "consulta__detalle", `💉 Vacunas: ${consulta.vacunas}`));
+    if (consulta.proximoControl) {
+      tarjeta.appendChild(crearElemento("p", "consulta__detalle", `📅 Próximo control: ${fechaCorta(consulta.proximoControl)}`));
+      if (consulta.proximoControl < hoyISO()) {
+        const aviso = crearElemento("p", "aviso-control-vencido", `Control vencido desde el ${fechaCorta(consulta.proximoControl)}.`);
+        aviso.setAttribute("role", "alert");
+        tarjeta.appendChild(aviso);
+      }
+    }
+    if (consulta.observaciones) tarjeta.appendChild(crearElemento("p", "consulta__detalle", `📝 Observaciones: ${consulta.observaciones}`));
+    const turno = turnos.find((t) => t.id === consulta.turnoId);
+    if (turno) tarjeta.appendChild(crearElemento("p", "tarjeta__meta", `Turno: ${fechaCorta(turno.fecha)} · ${turno.hora}`));
+    return tarjeta;
+  });
+  lineaTiempo.replaceChildren(...tarjetas);
+}
+
+selectorHistoria.addEventListener("change", () => renderHistoria());
+
+function limpiarFormularioConsulta() {
+  idConsultaEnEdicion = null;
+  campoConsulta.id.value = "";
+  campoConsulta.turnoId.value = "";
+  formConsulta.querySelector('button[type="submit"]').textContent = "Guardar consulta";
+}
+
+function abrirFormularioConsulta(turno) {
+  const mascota = mascotas.find((m) => m.id === turno.mascotaId);
+  if (!mascota) return;
+  mostrarSeccion("historias");
+  location.hash = "#historias";
+  actualizarSelectHistoria();
+  selectorHistoria.value = mascota.id;
+
+  const existente = consultas.find((c) => c.turnoId === turno.id);
+  formConsulta.reset();
+  limpiarFormularioConsulta();
+  campoConsulta.turnoId.value = turno.id;
+  campoConsulta.fecha.value = existente?.fecha || turno.fecha || hoyISO();
+  campoConsulta.motivo.value = existente?.motivo || turno.motivo || "";
+  campoConsulta.peso.value = existente?.peso ?? mascota.peso ?? "";
+  campoConsulta.diagnostico.value = existente?.diagnostico || "";
+  campoConsulta.tratamiento.value = existente?.tratamiento || "";
+  campoConsulta.vacunas.value = existente?.vacunas || "";
+  campoConsulta.proximoControl.value = existente?.proximoControl || "";
+  campoConsulta.observaciones.value = existente?.observaciones || "";
+  if (existente) {
+    idConsultaEnEdicion = existente.id;
+    campoConsulta.id.value = existente.id;
+    formConsulta.querySelector('button[type="submit"]').textContent = "Actualizar consulta";
+  }
+  renderHistoria(mascota.id);
+  formConsulta.scrollIntoView({ behavior: "smooth", block: "start" });
+  campoConsulta.peso.focus({ preventScroll: true });
+}
+
+formConsulta.addEventListener("submit", (evento) => {
+  evento.preventDefault();
+  const datos = {
+    mascotaId: selectorHistoria.value,
+    turnoId: campoConsulta.turnoId.value || null,
+    fecha: campoConsulta.fecha.value,
+    motivo: campoConsulta.motivo.value.trim(),
+    peso: Number(String(campoConsulta.peso.value).replace(",", ".")),
+    diagnostico: campoConsulta.diagnostico.value.trim(),
+    tratamiento: campoConsulta.tratamiento.value.trim(),
+    vacunas: campoConsulta.vacunas.value.trim(),
+    proximoControl: campoConsulta.proximoControl.value,
+    observaciones: campoConsulta.observaciones.value.trim(),
+  };
+
+  const errores = [];
+  if (!datos.mascotaId) errores.push([selectorHistoria, "Elegí una mascota para la consulta."]);
+  if (!fechaISOExiste(datos.fecha)) errores.push([campoConsulta.fecha, "Ingresá una fecha de consulta válida."]);
+  if (!datos.motivo) errores.push([campoConsulta.motivo, "El motivo es obligatorio."]);
+  if (!Number.isFinite(datos.peso) || datos.peso < PESO_MINIMO || datos.peso > PESO_MAXIMO) errores.push([campoConsulta.peso, `El peso debe estar entre ${PESO_MINIMO} y ${PESO_MAXIMO} kg.`]);
+  if (!datos.diagnostico) errores.push([campoConsulta.diagnostico, "El diagnóstico es obligatorio."]);
+  if (!datos.tratamiento) errores.push([campoConsulta.tratamiento, "El tratamiento es obligatorio."]);
+  if (datos.proximoControl && (!fechaISOExiste(datos.proximoControl) || datos.proximoControl < datos.fecha)) {
+    errores.push([campoConsulta.proximoControl, "El próximo control no puede ser anterior a la consulta."]);
+  }
+  if (errores.length) {
+    errores.forEach(([campo, mensaje]) => mostrarErrorCampo(campo, mensaje));
+    errores[0][0].focus();
+    return;
+  }
+
+  let consulta;
+  if (idConsultaEnEdicion) {
+    consulta = consultas.find((c) => c.id === idConsultaEnEdicion);
+    if (consulta) Object.assign(consulta, datos);
+  } else {
+    consulta = { id: nuevoId(), ...datos, creadaEn: new Date().toISOString() };
+    consultas.push(consulta);
+  }
+  const mascota = mascotas.find((m) => m.id === datos.mascotaId);
+  if (mascota) mascota.peso = datos.peso;
+  const turno = turnos.find((t) => t.id === datos.turnoId);
+  if (turno) turno.estado = "Atendido";
+  guardarOAvisar();
+  renderHistoria(datos.mascotaId);
+  formConsulta.reset();
+  limpiarFormularioConsulta();
+});
+
+formConsulta.addEventListener("reset", () => {
+  limpiarFormularioConsulta();
+});
+
+function abrirHistoriaDesdeBusqueda(mascotaId) {
+  mostrarSeccion("historias");
+  location.hash = "#historias";
+  actualizarSelectHistoria();
+  selectorHistoria.value = mascotaId;
+  renderHistoria(mascotaId);
+  document.getElementById("historias").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderResultadosBusqueda(texto) {
+  const consulta = normalizarNombre(texto);
+  listaResultados.replaceChildren();
+  if (!consulta) return;
+
+  const coincidencias = mascotas.filter((mascota) => {
+    const dueno = duenos.find((d) => d.id === mascota.duenoId);
+    return normalizarNombre(mascota.nombre).includes(consulta) ||
+      (dueno && normalizarNombre(dueno.nombre).includes(consulta));
+  });
+
+  coincidencias.forEach((mascota) => {
+    const dueno = duenos.find((d) => d.id === mascota.duenoId);
+    const tarjeta = crearElemento("article", "resultado-mascota");
+    tarjeta.appendChild(crearElemento("h3", "tarjeta__titulo", `🐾 ${mascota.nombre}`));
+    tarjeta.appendChild(crearElemento("p", "tarjeta__meta", `Dueño: ${dueno ? dueno.nombre : "Sin dueño registrado"}`));
+    const boton = crearElemento("button", "btn-chico", "📋 Abrir historia clínica");
+    boton.type = "button";
+    boton.dataset.mascotaId = mascota.id;
+    tarjeta.appendChild(boton);
+    listaResultados.appendChild(tarjeta);
+  });
+  if (!coincidencias.length) {
+    listaResultados.appendChild(crearElemento("p", "tarjeta__meta", "No se encontraron mascotas con ese nombre o dueño."));
+  }
+}
+
+buscador.addEventListener("input", () => renderResultadosBusqueda(buscador.value));
+document.getElementById("form-buscador").addEventListener("submit", (evento) => evento.preventDefault());
+listaResultados.addEventListener("click", (evento) => {
+  const boton = evento.target.closest("button[data-mascota-id]");
+  if (boton) abrirHistoriaDesdeBusqueda(boton.dataset.mascotaId);
+});
+
+/* ==========================================================================
+   EXPORTACIÓN E IMPORTACIÓN DE DATOS
+   ========================================================================== */
+const botonExportar = document.getElementById("btn-exportar");
+const botonImportar = document.getElementById("btn-importar");
+const archivoImportar = document.getElementById("archivo-importar");
+
+botonExportar.addEventListener("click", () => {
+  const datos = { duenos, mascotas, turnos, consultas };
+  const contenido = JSON.stringify(datos, null, 2);
+  const blob = new Blob([contenido], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const enlace = document.createElement("a");
+  enlace.href = url;
+  enlace.download = "veterinaria.json";
+  document.body.appendChild(enlace);
+  enlace.click();
+  enlace.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
+botonImportar.addEventListener("click", () => archivoImportar.click());
+
+archivoImportar.addEventListener("change", () => {
+  const archivo = archivoImportar.files && archivoImportar.files[0];
+  if (!archivo) return;
+
+  const lector = new FileReader();
+  lector.onload = () => {
+    let datos;
+    try {
+      datos = JSON.parse(String(lector.result));
+    } catch (error) {
+      alert("No se pudo importar el archivo: no contiene un JSON válido. No se modificó ningún dato.");
+      archivoImportar.value = "";
+      return;
+    }
+
+    const listasEsperadas = ["duenos", "mascotas", "turnos", "consultas"];
+    const estructuraValida = datos !== null && typeof datos === "object" && !Array.isArray(datos) &&
+      listasEsperadas.every((nombre) => Array.isArray(datos[nombre]));
+
+    if (!estructuraValida) {
+      alert("El archivo no tiene el formato esperado. Debe incluir las listas de dueños, mascotas, turnos y consultas. No se modificó ningún dato.");
+      archivoImportar.value = "";
+      return;
+    }
+
+    const confirmar = window.confirm(
+      "¿Querés importar estos datos? Se reemplazarán todos los datos actuales de la veterinaria."
+    );
+    if (!confirmar) {
+      archivoImportar.value = "";
+      return;
+    }
+
+    // Se reemplazan los contenidos sin cambiar las referencias de los arrays.
+    duenos.splice(0, duenos.length, ...datos.duenos);
+    mascotas.splice(0, mascotas.length, ...datos.mascotas);
+    turnos.splice(0, turnos.length, ...datos.turnos);
+    consultas.splice(0, consultas.length, ...datos.consultas);
+    const guardado = guardarDatos();
+
+    // Redibujar listas, agenda, selectores, historia clínica y búsqueda.
+    renderDuenos();
+    actualizarSelectHistoria();
+    renderHistoria();
+    renderResultadosBusqueda(buscador.value);
+    archivoImportar.value = "";
+    if (guardado) {
+      alert("Los datos se importaron correctamente.");
+    } else {
+      alert("Los datos se cargaron en pantalla, pero el navegador no pudo guardarlos de forma permanente. Exportá una copia para conservarlos.");
+    }
+  };
+
+  lector.onerror = () => {
+    alert("No se pudo leer el archivo seleccionado. No se modificó ningún dato.");
+    archivoImportar.value = "";
+  };
+  lector.readAsText(archivo, "UTF-8");
+});
+
+/* ==========================================================================
+   PRIMERA CARGA
+   renderDuenos() también arma los selects y dibuja mascotas y agenda.
+   ========================================================================== */
+
+actualizarBotonesFormTurno();
+precargarFechaTurno();
+const renderDuenosBase = renderDuenos;
+renderDuenos = function (...args) {
+  const resultado = renderDuenosBase.apply(this, args);
+  if (typeof selectorHistoria !== "undefined") actualizarSelectHistoria();
+  return resultado;
+};
+renderDuenos();
+actualizarSelectHistoria();
+renderHistoria();
+  </script>
+</body>
+</html>

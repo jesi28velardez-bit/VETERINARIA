@@ -1,0 +1,754 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   1. FUENTES
+   ========================================================================== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap");
+
+/* ==========================================================================
+   2. VARIABLES (paleta, tipografía, medidas)
+   ========================================================================== */
+:root {
+  /* Verde agua: color principal */
+  --color-principal: #14A3A3;
+  --color-principal-oscuro: #0E7F7F;
+  --color-principal-suave: #E1F5F5;
+
+  /* Coral suave: avisos, acciones delicadas y cancelaciones */
+  --color-coral: #FF8F7E;
+  --color-coral-oscuro: #C9422F;
+  --color-coral-suave: #FFE8E3;
+
+  /* Fondos y superficies */
+  --color-crema: #FFF8EE;
+  --color-superficie: #FFFFFF;
+  --color-borde: #EADFCB;
+
+  /* Texto */
+  --color-texto: #1F3333;
+  --color-texto-suave: #5F7373;
+
+  /* Estados de turno que no son ni principal ni coral */
+  --color-ambar: #8A5A00;
+  --color-ambar-suave: #FFF0CF;
+  --color-atendido: #3F6B5A;
+  --color-atendido-suave: #E4F0EA;
+
+  /* Tipografía */
+  --fuente-titulos: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fuente-texto: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Formas y sombras */
+  --radio: 18px;
+  --radio-chico: 12px;
+  --sombra: 0 4px 14px rgba(20, 60, 60, 0.08);
+  --sombra-hover: 0 8px 22px rgba(20, 60, 60, 0.16);
+
+  /* Ancho máximo del contenido */
+  --ancho-max: 1100px;
+}
+
+/* ==========================================================================
+   3. BASE (reset suave y estilos globales)
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-crema);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  line-height: 1.2;
+}
+
+h2 { font-size: 1.5rem; color: var(--color-principal-oscuro); }
+h3 { font-size: 1.1rem; }
+
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 3px solid var(--color-coral);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   4. ENCABEZADO: título, buscador, exportar/importar y menú
+   ========================================================================== */
+#encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem max(1rem, calc((100% - var(--ancho-max)) / 2)) 1rem;
+  background: var(--color-principal);
+  color: #fff;
+  box-shadow: var(--sombra);
+}
+
+#encabezado h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+#encabezado h1::before {
+  content: "🐾 ";
+}
+
+/* Buscador general */
+#form-buscador {
+  position: relative;
+}
+
+#form-buscador label {
+  /* Oculta la etiqueta a la vista pero la deja para lectores de pantalla */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#form-buscador::before {
+  content: "🔍";
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#buscador {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-texto);
+  font: inherit;
+}
+
+#buscador:focus {
+  outline: none;
+  border-color: var(--color-coral);
+}
+
+/* Exportar / Importar */
+#datos {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#btn-exportar,
+#btn-importar {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  box-shadow: none;
+}
+
+#btn-exportar::before { content: "📤 "; }
+#btn-importar::before { content: "📥 "; }
+
+#btn-exportar:hover,
+#btn-importar:hover {
+  background: #fff;
+  color: var(--color-principal-oscuro);
+}
+
+/* Menú de secciones */
+#menu ul {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0 0 0.25rem;
+  list-style: none;
+  overflow-x: auto;
+}
+
+#menu a {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-family: var(--fuente-titulos);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+#menu a:hover {
+  background: #fff;
+  color: var(--color-principal-oscuro);
+  transform: translateY(-2px);
+}
+
+#menu a.activo,
+#menu a[aria-current="page"] {
+  background: #fff;
+  color: var(--color-principal-oscuro);
+}
+
+#menu a[data-seccion="duenos"]::before    { content: "👤 "; }
+#menu a[data-seccion="mascotas"]::before  { content: "🐾 "; }
+#menu a[data-seccion="turnos"]::before    { content: "📅 "; }
+#menu a[data-seccion="historias"]::before { content: "📋 "; }
+
+/* ==========================================================================
+   5. CONTENIDO PRINCIPAL Y SECCIONES (una columna en el celular)
+   ========================================================================== */
+main {
+  flex: 1;
+  display: grid;
+  gap: 2.5rem;
+  padding: 1.5rem max(1rem, calc((100% - var(--ancho-max)) / 2)) 3rem;
+}
+
+main > section {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  scroll-margin-top: 1rem;
+}
+
+#duenos > h2::before    { content: "👤 "; }
+#mascotas > h2::before  { content: "🐾 "; }
+#turnos > h2::before    { content: "📅 "; }
+#historias > h2::before { content: "📋 "; }
+
+#resultados-busqueda > h2::before { content: "🔍 "; }
+
+/* Los resultados solo se muestran cuando hay algo para mostrar */
+#resultados-busqueda:has(#lista-resultados:empty) {
+  display: none;
+}
+
+#lista-resultados {
+  display: grid;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   6. TARJETAS: formularios, selector de historias y elementos de lista
+   ========================================================================== */
+form:not(#form-buscador),
+#historias > div,
+main li,
+#lista-resultados > * {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+form:not(#form-buscador),
+#historias > div {
+  padding: 1.25rem;
+}
+
+main li,
+#lista-resultados > * {
+  padding: 1rem 1.1rem;
+}
+
+/* Listas sin viñetas y con separación entre tarjetas */
+main ul,
+main ol {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Contenido típico de una tarjeta */
+.tarjeta__titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.tarjeta__meta {
+  margin: 0.15rem 0 0;
+  color: var(--color-texto-suave);
+  font-size: 0.92rem;
+}
+
+.tarjeta__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+/* Mensajes cuando una lista está vacía (desaparecen solos al agregar datos) */
+#lista-duenos:empty::before,
+#lista-mascotas:empty::before,
+#agenda-turnos:empty::before,
+#linea-tiempo:empty::before {
+  display: block;
+  padding: 1.5rem 1rem;
+  border: 2px dashed var(--color-borde);
+  border-radius: var(--radio);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-texto-suave);
+  text-align: center;
+}
+
+#lista-duenos:empty::before   { content: "👤 Todavía no cargaste dueños."; }
+#lista-mascotas:empty::before { content: "🐾 Todavía no cargaste mascotas."; }
+#agenda-turnos:empty::before  { content: "📅 No hay turnos para este día."; }
+#linea-tiempo:empty::before   { content: "📋 Esta mascota todavía no tiene consultas."; }
+
+/* ==========================================================================
+   7. FORMULARIOS: campos y etiquetas
+   ========================================================================== */
+form:not(#form-buscador) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-content: start;
+}
+
+form:not(#form-buscador) > div {
+  flex: 1 1 100%;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+input:not([type="hidden"]):not([type="file"]):not(#buscador),
+select,
+textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+  background: #fff;
+  color: var(--color-texto);
+  font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:not(#buscador):focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-principal);
+  box-shadow: 0 0 0 4px var(--color-principal-suave);
+}
+
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid {
+  border-color: var(--color-coral);
+  background: var(--color-coral-suave);
+}
+
+/* ==========================================================================
+   8. BOTONES (hover con cambio de color y elevación)
+   ========================================================================== */
+button {
+  padding: 0.7rem 1.2rem;
+  border: 0;
+  border-radius: var(--radio-chico);
+  background: var(--color-principal);
+  color: #fff;
+  font-family: var(--fuente-titulos);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  background: var(--color-principal-oscuro);
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-hover);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: var(--sombra);
+}
+
+button[type="submit"]::before { content: "💾 "; }
+
+/* Cancelar: botón secundario */
+button[type="reset"] {
+  background: var(--color-principal-suave);
+  color: var(--color-principal-oscuro);
+  box-shadow: none;
+}
+
+button[type="reset"]:hover {
+  background: var(--color-principal);
+  color: #fff;
+}
+
+/* Botones dentro de las tarjetas */
+.btn-chico {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-peligro {
+  background: var(--color-coral-suave);
+  color: var(--color-coral-oscuro);
+  box-shadow: none;
+}
+
+.btn-peligro:hover {
+  background: var(--color-coral);
+  color: #fff;
+}
+
+/* ==========================================================================
+   9. MASCOTAS: tarjeta con emoji según la especie
+   Estructura esperada: <li class="mascota" data-especie="Perro">
+                          <div class="mascota__info"> ... </div>
+                        </li>
+   ========================================================================== */
+.mascota {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mascota::before {
+  content: "🐾";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--color-principal-suave);
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.mascota[data-especie="Perro"]::before   { content: "🐶"; }
+.mascota[data-especie="Gato"]::before    { content: "🐱"; }
+.mascota[data-especie="Ave"]::before     { content: "🐦"; }
+.mascota[data-especie="Roedor"]::before  { content: "🐹"; }
+.mascota[data-especie="Reptil"]::before  { content: "🦎"; }
+
+.mascota__info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ==========================================================================
+   10. TURNOS: agenda con etiqueta de estado
+   Estructura esperada: <li class="turno">
+                          <div class="turno__cuando">12/11 · 10:30</div>
+                          <div class="turno__info"> ... <span class="estado estado--pendiente">Pendiente</span></div>
+                        </li>
+   ========================================================================== */
+.turno {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.turno__cuando {
+  align-self: flex-start;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radio-chico);
+  background: var(--color-principal-suave);
+  color: var(--color-principal-oscuro);
+  font-family: var(--fuente-titulos);
+  font-weight: 600;
+}
+
+.turno__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.estado {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.estado--pendiente  { background: var(--color-ambar-suave);     color: var(--color-ambar); }
+.estado--confirmado { background: var(--color-principal-suave); color: var(--color-principal-oscuro); }
+.estado--atendido   { background: var(--color-atendido-suave);  color: var(--color-atendido); }
+.estado--cancelado  { background: var(--color-coral-suave);     color: var(--color-coral-oscuro); }
+
+/* ==========================================================================
+   11. HISTORIAS: línea de tiempo vertical
+   Estructura esperada: <li class="consulta">
+                          <time class="consulta__fecha">12/11/2026</time>
+                          <h4 class="tarjeta__titulo">Motivo</h4> ... </li>
+   ========================================================================== */
+#linea-tiempo {
+  position: relative;
+  padding-left: 2rem;
+}
+
+#linea-tiempo:not(:empty)::after {
+  content: "";
+  position: absolute;
+  left: 0.65rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(var(--color-principal), var(--color-principal-suave));
+}
+
+#linea-tiempo > li {
+  position: relative;
+}
+
+/* Punto de cada consulta sobre la línea */
+#linea-tiempo > li::before {
+  content: "";
+  position: absolute;
+  left: -1.75rem;
+  top: 1.2rem;
+  width: 1rem;
+  height: 1rem;
+  border: 3px solid var(--color-principal);
+  border-radius: 50%;
+  background: var(--color-crema);
+}
+
+.consulta__fecha {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--color-principal-oscuro);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.consulta p {
+  margin: 0.4rem 0 0;
+}
+
+/* ==========================================================================
+   12. PIE DE PÁGINA
+   ========================================================================== */
+footer {
+  padding: 1.25rem 1rem;
+  background: var(--color-principal-suave);
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* ==========================================================================
+   DUEÑOS: errores de validación, avisos, edición y chips de mascotas
+   ========================================================================== */
+.mensaje-error {
+  margin: 0.35rem 0 0;
+  color: var(--color-coral-oscuro);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.mensaje-error::before { content: "⚠️ "; }
+
+/* !important porque el estilo base de los campos usa un selector muy específico */
+.campo-invalido {
+  border-color: var(--color-coral) !important;
+  background: var(--color-coral-suave) !important;
+}
+
+.aviso {
+  margin: 0.75rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--color-coral);
+  border-radius: var(--radio-chico);
+  background: var(--color-coral-suave);
+  color: var(--color-coral-oscuro);
+  font-size: 0.9rem;
+}
+
+.aviso::before { content: "⚠️ "; }
+
+/* Tarjeta que se está editando */
+.editando {
+  border-color: var(--color-principal);
+  box-shadow: 0 0 0 3px var(--color-principal-suave);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.chip {
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--color-principal-suave);
+  color: var(--color-principal-oscuro);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   TURNOS: barra para cambiar de día en la agenda
+   ========================================================================== */
+#agenda-barra {
+  display: grid;
+  gap: 0.6rem;
+}
+
+#agenda-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#agenda-nav button {
+  padding: 0.5rem 0.9rem;
+  background: var(--color-principal-suave);
+  color: var(--color-principal-oscuro);
+  box-shadow: none;
+}
+
+#agenda-nav button:hover {
+  background: var(--color-principal);
+  color: #fff;
+  box-shadow: var(--sombra-hover);
+}
+
+#agenda-hoy::before { content: "📅 "; }
+
+/* Dos IDs para ganarle al estilo base de los campos, que usa un selector muy específico */
+#agenda-nav #agenda-fecha {
+  width: auto;
+  flex: 1 1 9rem;
+}
+
+#agenda-titulo {
+  margin: 0;
+  color: var(--color-principal-oscuro);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   13. TABLET Y ESCRITORIO (desde 768 px: dos columnas)
+   Formulario a la izquierda, lista a la derecha.
+   ========================================================================== */
+@media (min-width: 768px) {
+  /* Encabezado en grilla: título | exportar/importar, buscador, menú */
+  #encabezado {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "titulo datos"
+      "buscador buscador"
+      "menu menu";
+    align-items: center;
+    column-gap: 1.5rem;
+  }
+
+  #encabezado h1    { grid-area: titulo; font-size: 1.9rem; }
+  #datos            { grid-area: datos; }
+  #form-buscador    { grid-area: buscador; }
+  #menu             { grid-area: menu; }
+
+  #btn-exportar,
+  #btn-importar {
+    flex: none;
+  }
+
+  /* Dueños, Mascotas y Turnos: h2 arriba, formulario | h3 + lista */
+  :is(#duenos, #mascotas, #turnos) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto 1fr;
+    column-gap: 1.5rem;
+  }
+
+  :is(#duenos, #mascotas, #turnos) > h2 { grid-column: 1 / -1; grid-row: 1; }
+  :is(#duenos, #mascotas, #turnos) > form { grid-column: 1; grid-row: 2 / span 2; }
+  :is(#duenos, #mascotas, #turnos) > h3 { grid-column: 2; grid-row: 2; }
+  #turnos > #agenda-barra { grid-column: 2; grid-row: 2; }
+  :is(#duenos, #mascotas, #turnos) > :is(ul, ol) { grid-column: 2; grid-row: 3; }
+
+  /* Historias: h2, selector de mascota (ancho completo), formulario | línea de tiempo */
+  #historias {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: 1.5rem;
+  }
+
+  #historias > h2   { grid-column: 1 / -1; grid-row: 1; }
+  #historias > div  { grid-column: 1 / -1; grid-row: 2; }
+  #historias > form { grid-column: 1; grid-row: 3 / span 2; }
+  #historias > h3   { grid-column: 2; grid-row: 3; }
+  #historias > ol   { grid-column: 2; grid-row: 4; }
+
+  /* Turno: fecha y hora al costado */
+  .turno {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  /* Resultados de búsqueda en dos columnas */
+  #lista-resultados {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   14. ACCESIBILIDAD: respeta a quienes reducen las animaciones
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+
+  button:hover,
+  #menu a:hover {
+    transform: none;
+  }
+}
